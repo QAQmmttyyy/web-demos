@@ -6,6 +6,8 @@ import DjRadio from '../DjRadio/DjRadio';
 
 class Discover extends React.Component {
   render() {
+    const { match } = this.props;
+
     return (
       <div>
         <ul style={{ display: "flex", listStyle: "none" }}>
