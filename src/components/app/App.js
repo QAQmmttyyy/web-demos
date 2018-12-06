@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, Redirect, Link } from 'react-router-dom';
 import Discover from '../Discover/Discover';
 import PlayListDetail from '../PlayListDetail/PlayListDetail';
 import DjRadioDetail from '../DjRadioDetail/DjRadioDetail';
@@ -11,7 +11,7 @@ class App extends Component {
       <Router>
         <div style={{position: "relative"}}>
           <header style={{height: "20px"}}>QAQ Music</header>
-          <div style={{ display: "flex", height: "600px" }}>
+          <div style={{ display: "flex", height: "400px" }}>
             <div style={{ width: "25%", backgroundColor: "#cccccc" }}>
               <ul style={{ listStyleType: "none", padding: "10px" }}>
                 <li>
@@ -27,15 +27,18 @@ class App extends Component {
             </div>
 
             <div style={{ flex: "auto", padding: "10px" }}>
-              {/* 常规一级路由组件 */}
-              <Route path="/discover" component={Discover} />
+              <Switch>
+                {/* 常规一级路由组件 */}
+                <Redirect exact from="/" to="/discover" />
+                <Route path="/discover" component={Discover} />
 
-              {/* 提升层级：歌单/电台详情页路由组件，会有query params，与一级显示区域相同 */}
-              <Route path="/playlist" component={PlayListDetail} />
-              <Route path="/djradio" component={DjRadioDetail} />
+                {/* 提升层级：歌单/电台详情页路由组件，会有query params，与一级显示区域相同 */}
+                <Route path="/playlist" component={PlayListDetail} />
+                <Route path="/djradio" component={DjRadioDetail} />
 
-              {/* 提升层级：视频详情页路由组件，会有query params，显示区域为：除header以外 */}
-              <Route path="/video" component={VideoDetail} />
+                {/* 提升层级：视频详情页路由组件，会有query params，显示区域为：除header以外 */}
+                <Route path="/video" component={VideoDetail} />
+              </Switch>
             </div>
           </div>
           <footer style={{height: "20px"}}>player</footer>
