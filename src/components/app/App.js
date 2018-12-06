@@ -1,48 +1,65 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Switch, Route, Redirect, Link } from 'react-router-dom';
+import PlayerContext from '../PlayerContext';
 import Discover from '../Discover/Discover';
 import PlayListDetail from '../PlayListDetail/PlayListDetail';
 import DjRadioDetail from '../DjRadioDetail/DjRadioDetail';
 import VideoDetail from '../VideoDetail/VideoDetail';
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      playSetting: {
+        mode: 0,
+        volume: 1.0,
+        autoPlay: false,
+        index: 0
+      },
+      playMode: ['列表循环', '随机播放'],
+      songList: []
+    };
+  }
+
   render() {
     return (
       <Router>
-        <div style={{position: "relative"}}>
-          <header style={{height: "20px"}}>QAQ Music</header>
-          <div style={{ display: "flex", height: "400px" }}>
-            <div style={{ width: "25%", backgroundColor: "#cccccc" }}>
-              <ul style={{ listStyleType: "none", padding: "10px" }}>
-                <li>
-                  <Link to="/discover">发现音乐</Link>
-                </li>
-                <li>
-                  <Link to="/fm">私人FM</Link>
-                </li>
-                <li>
-                  <Link to="/friend">朋友</Link>
-                </li>
-              </ul>
+        <PlayerContext.Provider value={this.state}>
+          <div style={{position: "relative"}}>
+            <header style={{height: "20px"}}>QAQ Music</header>
+            <div style={{ display: "flex", height: "400px" }}>
+              <div style={{ width: "25%", backgroundColor: "#cccccc" }}>
+                <ul style={{ listStyleType: "none", padding: "10px" }}>
+                  <li>
+                    <Link to="/discover">发现音乐</Link>
+                  </li>
+                  <li>
+                    <Link to="/fm">私人FM</Link>
+                  </li>
+                  <li>
+                    <Link to="/friend">朋友</Link>
+                  </li>
+                </ul>
+              </div>
+
+              <div style={{ flex: "auto", padding: "10px" }}>
+                <Switch>
+                  {/* 常规一级路由组件 */}
+                  <Redirect exact from="/" to="/discover" />
+                  <Route path="/discover" component={Discover} />
+
+                  {/* 提升层级：歌单/电台详情页路由组件，会有query params，与一级显示区域相同 */}
+                  <Route path="/playlist" component={PlayListDetail} />
+                  <Route path="/djradio" component={DjRadioDetail} />
+
+                  {/* 提升层级：视频详情页路由组件，会有query params，显示区域为：除header以外 */}
+                  <Route path="/video" component={VideoDetail} />
+                </Switch>
+              </div>
             </div>
-
-            <div style={{ flex: "auto", padding: "10px" }}>
-              <Switch>
-                {/* 常规一级路由组件 */}
-                <Redirect exact from="/" to="/discover" />
-                <Route path="/discover" component={Discover} />
-
-                {/* 提升层级：歌单/电台详情页路由组件，会有query params，与一级显示区域相同 */}
-                <Route path="/playlist" component={PlayListDetail} />
-                <Route path="/djradio" component={DjRadioDetail} />
-
-                {/* 提升层级：视频详情页路由组件，会有query params，显示区域为：除header以外 */}
-                <Route path="/video" component={VideoDetail} />
-              </Switch>
-            </div>
+            <footer style={{height: "20px"}}>player</footer>
           </div>
-          <footer style={{height: "20px"}}>player</footer>
-        </div>
+        </PlayerContext.Provider>
       </Router>
     );
   }
