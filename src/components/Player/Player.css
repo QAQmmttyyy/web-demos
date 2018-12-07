@@ -1,0 +1,158 @@
+/* 
+样式主色：#7800bd （一种紫色）
+字体颜色：#333333 （深灰色）
+*/
+
+.clearfix::after {
+  content: "";
+  /* display: block很关键 */
+  display: block;
+  clear: both;
+}
+.f-left {
+  float: left;
+}
+.f-right {
+  float: right;
+}
+
+.player {
+  width: 1080px;
+  padding: 8px 0;
+  margin: 20px auto;
+  border: 1px solid #f0d7ff;
+  border-radius: 2px;
+}
+.player .btn {
+  width: 34px;
+  height: 34px;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-color: #ffffff;
+  cursor: pointer;
+}
+.player .left-controls .prev-btn {
+  margin-left: 30px;
+  background-image: url(./assets/prev-circlebg.png);
+  background-repeat: no-repeat;
+  background-size: 88%;
+}
+.player .left-controls .play-btn {
+  margin-left: 20px;
+  background-image: url(./assets/play.png);
+  background-repeat: no-repeat;
+  background-size: 100%;
+}
+.player .left-controls .pause {
+  background-image: url(./assets/pause.png);
+}
+.player .left-controls .next-btn {
+  margin-left: 20px;
+  background-image: url(./assets/next-circlebg.png);
+  background-repeat: no-repeat;
+  background-size: 88%;
+}
+.player .mid-controls {
+  padding: 15px 46px;
+  margin-left: 32px;
+  margin-right: 24px;
+}
+.player .mid-controls .progress {
+  width: 496px;
+  height: 4px;
+}
+.player .mid-controls .progress .played-time,
+.player .mid-controls .progress .whole-time {
+  font-size: 12px;
+  line-height: 12px;
+  color: #333333;
+}
+.player .mid-controls .progress .played-time {
+  margin-top: -5px;
+  margin-left: -46px;
+}
+.player .mid-controls .progress .whole-time {
+  margin-top: -5px;
+  margin-right: -46px;
+}
+.player .mid-controls .progress .progress-behind {
+  width: 100%;
+  height: 100%;
+  background-color: #cccccc;
+  border-radius: 3px;
+}
+.player .mid-controls .progress .progress-front {
+  /* 此处 width 由 js 控制 */
+  width: 0;
+  height: 100%;
+  background-color: #7800bd;
+  border-radius: 3px;
+}
+.player .mid-controls .progress .progress-front .progress-btn {
+  display: block;
+  width: 16px;
+  height: 16px;
+  margin: -6px -8px 0 0;
+  border-radius: 50%;
+  background-image: url(./assets/progress-button-fill.png);
+  background-repeat: no-repeat;
+  background-size: 100%;
+}
+.player .mid-controls .progress .progress-front .progress-btn:hover {
+  box-shadow: 0 0 10px #cccccc;
+}
+
+/* right-controls */
+.player .right-controls .mode-btn {
+  width: 18px;
+  height: 34px;
+  background-repeat: no-repeat;
+  background-size: 100%;
+  background-position-y: center;
+  cursor: pointer;
+}
+.player .right-controls .loop-mode {
+  background-image: url(./assets/play-in-loop.png);
+}
+/* .player .right-controls .single-mode {
+  background-image: url(play-in-loop.png);
+} */
+.player .right-controls .random-mode {
+  background-image: url(./assets/play-in-random.png);
+}
+.player .right-controls .list-btn-wrap {
+  padding: 8px 0 0 20px;
+  margin-left: 18px;
+  cursor: pointer;
+}
+.player .right-controls .list-btn-wrap .list-btn {
+  width: 20px;
+  height: 34px;
+  margin-top: -7px;
+  margin-left: -20px;
+  background-image: url(./assets/play-list.png);
+  background-repeat: no-repeat;
+  background-size: 100%;
+  background-position-y: center;
+  background-color: #ffffff;
+}
+.player .right-controls .list-btn-wrap .songs-num {
+  height: 18px;
+  padding: 0 4px;
+  font-size: 12px;
+  line-height: 18px;
+  text-align: left;
+  color: #7800bd;
+}
+
+.playlist-panel ul {
+  width: 1080px;
+  margin: 0 auto;
+  padding-left: 0;
+  list-style: none;
+  font-size: 12px;
+  color: #333333;
+}
+.playlist-panel li.cur-play {
+  color: #7800bd
+}

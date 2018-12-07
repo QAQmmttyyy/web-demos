@@ -5,6 +5,8 @@ import Discover from '../Discover/Discover';
 import PlayListDetail from '../PlayListDetail/PlayListDetail';
 import DjRadioDetail from '../DjRadioDetail/DjRadioDetail';
 import VideoDetail from '../VideoDetail/VideoDetail';
+import SongDetailLink from '../SongDetailLink/SongDetailLink';
+import SongDetail from '../SongDetail/SongDetail';
 
 class App extends Component {
   constructor(props) {
@@ -25,10 +27,12 @@ class App extends Component {
     return (
       <Router>
         <PlayerContext.Provider value={this.state}>
-          <div style={{position: "relative"}}>
-            <header style={{height: "20px"}}>QAQ Music</header>
+          <div style={{ position: "relative" }}>
+            <header style={{ height: "20px" }}>QAQ Music</header>
             <div style={{ display: "flex", height: "400px" }}>
+              {/* sideBar */}
               <div style={{ width: "25%", backgroundColor: "#cccccc" }}>
+                {/* side nav */}
                 <ul style={{ listStyleType: "none", padding: "10px" }}>
                   <li>
                     <Link to="/discover">发现音乐</Link>
@@ -40,24 +44,29 @@ class App extends Component {
                     <Link to="/friend">朋友</Link>
                   </li>
                 </ul>
+                {/* SongDetailLink */}
+                <SongDetailLink />
               </div>
 
               <div style={{ flex: "auto", padding: "10px" }}>
                 <Switch>
-                  {/* 常规一级路由组件 */}
+                  {/* 常规一级路由 */}
                   <Redirect exact from="/" to="/discover" />
                   <Route path="/discover" component={Discover} />
 
-                  {/* 提升层级：歌单/电台详情页路由组件，会有query params，与一级显示区域相同 */}
+                  {/* 提升层级：歌单/电台详情页，会有query params，与一级显示区域相同 */}
                   <Route path="/playlist" component={PlayListDetail} />
                   <Route path="/djradio" component={DjRadioDetail} />
 
-                  {/* 提升层级：视频详情页路由组件，会有query params，显示区域为：除header以外 */}
+                  {/* 提升层级：song详情页，会有query params，显示区域为：除header/footer以外 */}
+                  <Route path="/song" component={SongDetail} />
+
+                  {/* 提升层级：视频详情页，会有query params，显示区域为：除header以外 */}
                   <Route path="/video" component={VideoDetail} />
                 </Switch>
               </div>
             </div>
-            <footer style={{height: "20px"}}>player</footer>
+            <footer style={{ height: "20px" }}>player</footer>
           </div>
         </PlayerContext.Provider>
       </Router>

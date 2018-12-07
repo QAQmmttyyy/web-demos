@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 class PlayList extends React.Component {
   constructor(props) {
     super(props);
+    // 动态版从API取数据。
     this.state = {
       songlists: [
         { tid: 111, title: '歌单111' },
