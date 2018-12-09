@@ -22,6 +22,7 @@ class App extends React.Component {
     };
     // bind this to method
     this.play = this.play.bind(this);
+    this.pause = this.pause.bind(this);
     this.playAll = this.playAll.bind(this);
     this.addAll = this.addAll.bind(this);
   }
@@ -31,6 +32,9 @@ class App extends React.Component {
       currentSong: this.state.playingList[index],
       isPause: false
     });
+  }
+  pause() {
+    this.setState({ isPause: true });
   }
   playAll(songList) {
     this.setState({
@@ -56,6 +60,7 @@ class App extends React.Component {
           value={{
             playerState: this.state,
             play: this.play,
+            pause: this.pause,
             playAll: this.playAll,
             addAll: this.addAll
           }}
