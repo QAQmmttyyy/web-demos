@@ -1,4 +1,5 @@
 import React from 'react';
+import PlayerContext from '../PlayerContext';
 
 class PlayListDetail extends React.Component {
   constructor(props) {
@@ -6,7 +7,7 @@ class PlayListDetail extends React.Component {
     // 动态版从API取数据。
     this.state = {
       tid: 111,
-      songlist: [
+      songList: [
         {
           id: 11,
           name: '越伤越爱',
@@ -35,19 +36,34 @@ class PlayListDetail extends React.Component {
     }
   }
 
+  handleClick(func) {
+    func(this.state.songList);
+  }
+
   render() {
     const { location } = this.props;
     
     return (
-      <div>
-        <h1>{ `playlist ${location.search}` }</h1>
-        <h4><a href="">播放全部</a></h4>
-        <ul>
-          {this.state.songlist.map((song) => (
-            <li key={song.id}>{song.name}-{song.artists}</li>
-          ))}
-        </ul>
-      </div>
+      <PlayerContext.Consumer>
+        {({ playAll, addAll }) => (
+          <div>
+            <h1>{ `playlist ${location.search}` }</h1>
+            <h4>
+              <button onClick={() => { this.handleClick(playAll); }}>
+                play全部
+              </button>
+              <button onClick={() => { this.handleClick(addAll); }}>
+                add全部
+              </button>
+            </h4>
+            <ul>
+              {this.state.songList.map((song) => (
+                <li key={song.id}>{song.name}-{song.artists}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </PlayerContext.Consumer>
     );
   }
 }

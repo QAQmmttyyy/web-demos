@@ -1,32 +1,66 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Switch, Route, Redirect, Link } from 'react-router-dom';
 import PlayerContext from '../PlayerContext';
+
 import Discover from '../Discover/Discover';
 import PlayListDetail from '../PlayListDetail/PlayListDetail';
 import DjRadioDetail from '../DjRadioDetail/DjRadioDetail';
 import VideoDetail from '../VideoDetail/VideoDetail';
 import SongDetailLink from '../SongDetailLink/SongDetailLink';
 import SongDetail from '../SongDetail/SongDetail';
+import Player from '../Player/Player';
 
-class App extends Component {
+class App extends React.Component {
   constructor(props) {
     super(props);
+    // PlayerContext value
+    // 可用localStorage 存储此状态
     this.state = {
-      playSetting: {
-        mode: 0,
-        volume: 1.0,
-        autoPlay: false,
-        index: 0
-      },
-      playMode: ['列表循环', '随机播放'],
-      songList: []
+      playingList: [],
+      currentSong: {},
+      isPause: true
     };
+    // bind this to method
+    this.play = this.play.bind(this);
+    this.playAll = this.playAll.bind(this);
+    this.addAll = this.addAll.bind(this);
+  }
+  // player operation
+  play(index) {
+    this.setState({
+      currentSong: this.state.playingList[index],
+      isPause: false
+    });
+  }
+  playAll(songList) {
+    this.setState({
+      playingList: songList,
+      currentSong: songList[0],
+      isPause: false
+    });
+  }
+  addAll(songList) {
+    if (this.state.playingList.length) {
+      this.setState({
+        playingList: this.state.playingList.concat(songList)
+      });
+    } else {
+      this.playAll(songList);
+    }
   }
 
   render() {
     return (
       <Router>
-        <PlayerContext.Provider value={this.state}>
+        <PlayerContext.Provider 
+          value={{
+            playerState: this.state,
+            play: this.play,
+            playAll: this.playAll,
+            addAll: this.addAll
+          }}
+        >
+          {/* app ui */}
           <div style={{ position: "relative" }}>
             <header style={{ height: "20px" }}>QAQ Music</header>
             <div style={{ display: "flex", height: "400px" }}>
@@ -66,7 +100,9 @@ class App extends Component {
                 </Switch>
               </div>
             </div>
-            <footer style={{ height: "20px" }}>player</footer>
+            <footer>
+              <Player />
+            </footer>
           </div>
         </PlayerContext.Provider>
       </Router>

@@ -6,7 +6,7 @@ class PlayList extends React.Component {
     super(props);
     // 动态版从API取数据。
     this.state = {
-      songlists: [
+      playlists: [
         { tid: 111, title: '歌单111' },
         { tid: 222, title: '歌单222' },
         { tid: 333, title: '歌单333' }
@@ -18,16 +18,16 @@ class PlayList extends React.Component {
     return (
       <div>
         <ul>
-          {this.state.songlists.map((songlist) => (
-            <li key={songlist.tid}>
+          {this.state.playlists.map((playlist) => (
+            <li key={playlist.tid}>
               <Link to={{
                   pathname: "/playlist",
-                  search: `?tid=${songlist.tid}`
+                  search: `?tid=${playlist.tid}`
                 }}
               >
-                {songlist.title}
+                {playlist.title}
               </Link>
-              <a href="" data-tid={`${songlist.tid}`}>--播放</a>
+              <a href="" data-tid={`${playlist.tid}`}>--播放</a>
             </li>
           ))}
         </ul>
