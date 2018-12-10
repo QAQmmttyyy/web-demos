@@ -18,6 +18,7 @@ class App extends React.Component {
     this.state = {
       playingList: [],
       currentSong: {},
+      curSongIndex: -1,
       isPause: true
     };
     // bind this to method
@@ -28,10 +29,19 @@ class App extends React.Component {
   }
   // player operation
   play(index) {
-    this.setState({
-      currentSong: this.state.playingList[index],
-      isPause: false
-    });
+    if (index >= 0) {
+      if (index === this.state.curSongIndex) {
+        if (this.isPause) {
+          this.setState({ isPause: false });
+        }
+      } else {
+        this.setState({
+          currentSong: this.state.playingList[index],
+          curSongIndex: index,
+          isPause: false
+        });
+      } 
+    }
   }
   pause() {
     this.setState({ isPause: true });
@@ -40,6 +50,7 @@ class App extends React.Component {
     this.setState({
       playingList: songList,
       currentSong: songList[0],
+      curSongIndex: 0,
       isPause: false
     });
   }

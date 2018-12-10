@@ -33,7 +33,7 @@ class PlayListDetail extends React.Component {
           url: '徐薇 - 放下.mp3'
         }
       ]
-    }
+    };
   }
 
   handleClick(func) {
@@ -45,20 +45,33 @@ class PlayListDetail extends React.Component {
     
     return (
       <PlayerContext.Consumer>
-        {({ playAll, addAll }) => (
+        {({ playerState, playAll, addAll }) => (
           <div>
             <h1>{ `playlist ${location.search}` }</h1>
             <h4>
-              <button onClick={() => { this.handleClick(playAll); }}>
+              <button 
+                onClick={() => this.handleClick(playAll)}
+              >
                 play全部
               </button>
-              <button onClick={() => { this.handleClick(addAll); }}>
+              <button 
+                onClick={() => this.handleClick(addAll)}
+              >
                 add全部
               </button>
             </h4>
             <ul>
               {this.state.songList.map((song) => (
-                <li key={song.id}>{song.name}-{song.artists}</li>
+                <li 
+                  key={song.id}
+                  style={
+                    playerState.currentSong.id === song.id 
+                      ? { color: '#7800bd' }
+                      : {}
+                  }
+                >
+                  {song.name}-{song.artists}
+                </li>
               ))}
             </ul>
           </div>

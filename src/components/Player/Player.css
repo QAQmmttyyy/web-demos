@@ -27,7 +27,7 @@
   height: 34px;
   background-repeat: no-repeat;
   background-position: center center;
-  background-color: #ffffff;
+  /* background-color: #7800bd; */
   cursor: pointer;
 }
 .player .left-controls .prev-btn {
@@ -158,5 +158,5 @@
   color: #333333;
 }
 .player .playlist-panel li.cur-play {
-  color: #7800bd
+  color: #7800bd;
 }
