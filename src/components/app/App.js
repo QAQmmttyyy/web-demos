@@ -31,9 +31,9 @@ class App extends React.Component {
   play(index) {
     if (index >= 0) {
       if (index === this.state.curSongIndex) {
-        if (this.isPause) {
-          this.setState({ isPause: false });
-        }
+        // if (this.isPause) {
+        this.setState({ isPause: false });
+        // }
       } else {
         this.setState({
           currentSong: this.state.playingList[index],

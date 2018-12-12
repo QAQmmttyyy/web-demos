@@ -15,6 +15,9 @@
 .f-right {
   float: right;
 }
+.dis-hide {
+  display: none;
+}
 
 .player {
   width: 1080px;

@@ -27,7 +27,7 @@ class PlayList extends React.Component {
               >
                 {playlist.title}
               </Link>
-              <a href="" data-tid={`${playlist.tid}`}>--播放</a>
+              <button data-tid={`${playlist.tid}`}>--播放</button>
             </li>
           ))}
         </ul>
