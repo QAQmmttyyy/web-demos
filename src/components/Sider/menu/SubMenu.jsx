@@ -47,24 +47,36 @@ class SubMenu extends React.Component {
       }`;
 
       subMenuChildren = [
-        <div 
+        <div
+          key="subMenuTitle"
           className="mty-menu-submenu-title"
           onClick={() => this.toggleOpenClose()}
         >
           <span>{title}</span>
           <i className={subMenuArrowCls}>open|close</i>
         </div>,
-        <ul className={subMenuMenuCls}>{items}</ul>
+        <ul
+          key="subMenuMenu"
+          className={subMenuMenuCls}
+        >
+          {items}
+        </ul>
       ];
       
     } else {
       subMenuChildren = [
-        <div 
+        <div
+          key="subMenuTitle"
           className="mty-menu-submenu-title"
         >
           <span>{title}</span>
         </div>,
-        <ul className="mty-menu mty-menu-submenu-menu">{items}</ul>
+        <ul
+          key="subMenuMenu"
+          className="mty-menu mty-menu-submenu-menu"
+        >
+          {items}
+        </ul>
       ];
     }
 
