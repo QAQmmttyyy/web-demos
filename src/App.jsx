@@ -1,14 +1,14 @@
 import React from 'react';
-import { BrowserRouter as Router, Switch, Route, Redirect, Link } from 'react-router-dom';
-import PlayerContext from '../PlayerContext';
+import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
+import PlayerContext from './context/PlayerContext';
 
-import Discover from '../Discover/Discover';
-import PlayListDetail from '../PlayListDetail/PlayListDetail';
-import DjRadioDetail from '../DjRadioDetail/DjRadioDetail';
-import VideoDetail from '../VideoDetail/VideoDetail';
-import SongDetailLink from '../SongDetailLink/SongDetailLink';
-import SongDetail from '../SongDetail/SongDetail';
-import Player from '../Player/Player';
+import Sider from './components/Sider/Sider.jsx';
+import Discover from './components/Discover/Discover.jsx';
+import PlayListDetail from './components/PlayListDetail/PlayListDetail.jsx';
+import DjRadioDetail from './components/DjRadioDetail/DjRadioDetail.jsx';
+import VideoDetail from './components/VideoDetail/VideoDetail.jsx';
+import SongDetail from './components/SongDetail/SongDetail.jsx';
+// import Player from './components/Player/Player.jsx';
 
 class App extends React.Component {
   constructor(props) {
@@ -19,8 +19,44 @@ class App extends React.Component {
       playingList: [],
       currentSong: {},
       curSongIndex: -1,
-      isPause: true
+      isPause: true,
+      isLogin: false
     };
+    // TODO:
+    // menuInfo 登录与未登录不同。
+    // 登陆后更改，然后设置 isLogin 触发更新。
+    this.menuInfo = [
+      {
+        title: '推荐',
+        enableOpenClose: false,
+        menuItems: [
+          {
+            // id: 0 对应于‘收藏的歌单’submenu
+            to: '/discover' || {},
+            iconType: 'discover',
+            description: '发现音乐'
+          },
+          {
+            // id: 0 对应于‘收藏的歌单’submenu
+            to: '/fm' || {},
+            iconType: 'fm',
+            description: '私人FM'
+          },
+          {
+            // id: 0 对应于‘收藏的歌单’submenu
+            to: '/videos' || {},
+            iconType: 'videos',
+            description: '视频'
+          },
+          {
+            // id: 0 对应于‘收藏的歌单’submenu
+            to: '/friend' || {},
+            iconType: 'friend',
+            description: '朋友'
+          }
+        ]
+      }
+    ];
     // bind this to method
     this.play = this.play.bind(this);
     this.pause = this.pause.bind(this);
@@ -77,28 +113,26 @@ class App extends React.Component {
           }}
         >
           {/* app ui */}
-          <div style={{ position: "relative" }}>
-            <header style={{ height: "20px" }}>QAQ Music</header>
-            <div style={{ display: "flex", height: "400px" }}>
+          {/* <div style={{ position: "relative" }}> */}
+            <header style={{ 
+                position: 'fixed',
+                top: 0,
+                width: '100%',
+                height: 50,
+              }}
+            >
+              QAQ Music
+            </header>
+            <div style={{ 
+                boxSizing: 'border-box',
+                height: "100%",
+                padding: '50px 0 51px 208px',
+              }}
+            >
               {/* sideBar */}
-              <div style={{ width: "25%", backgroundColor: "#cccccc" }}>
-                {/* side nav */}
-                <ul style={{ listStyleType: "none", padding: "10px" }}>
-                  <li>
-                    <Link to="/discover">发现音乐</Link>
-                  </li>
-                  <li>
-                    <Link to="/fm">私人FM</Link>
-                  </li>
-                  <li>
-                    <Link to="/friend">朋友</Link>
-                  </li>
-                </ul>
-                {/* SongDetailLink */}
-                <SongDetailLink />
-              </div>
+              <Sider menuInfo={this.menuInfo} />
 
-              <div style={{ flex: "auto", padding: "10px" }}>
+              <div style={{ padding: 10 }}>
                 <Switch>
                   {/* 常规一级路由 */}
                   <Redirect exact from="/" to="/discover" />
@@ -116,10 +150,17 @@ class App extends React.Component {
                 </Switch>
               </div>
             </div>
-            <footer>
-              <Player />
+            <footer style={{
+                position: 'fixed',
+                bottom: 0,
+                width: '100%',
+                height: 50,
+                borderTop: "1px solid #e1e1e1"
+              }}
+            >
+              {/* <Player /> */}
             </footer>
-          </div>
+          {/* </div> */}
         </PlayerContext.Provider>
       </Router>
     );

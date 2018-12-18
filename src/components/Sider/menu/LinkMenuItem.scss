@@ -1,0 +1,36 @@
+.mty-menu-item {
+  a {
+    display: block;
+    height: 32px;
+    line-height: 32px;
+    padding-left: 20px;
+    padding-right: 16px;
+    // 以下前三个实现 text hide
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color: #595959;
+    text-decoration: none;
+  }
+
+  &-icon {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    // 以下前两个 实现垂直居中
+    vertical-align: top;
+    margin-top: 8px;
+    margin-right: 8px;
+    font-size: 0;
+  }
+
+  // 交互
+  a:hover {
+    background-color: #e8e8e8;
+  }
+
+  &-selected {
+    color: #000000;
+    background-color: #e8e8e8;
+  }
+}

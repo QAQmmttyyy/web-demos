@@ -1,5 +1,5 @@
 import React from 'react';
-import PlayerContext from '../PlayerContext';
+import PlayerContext from '../../context/PlayerContext';
 
 class PlayListDetail extends React.Component {
   constructor(props) {

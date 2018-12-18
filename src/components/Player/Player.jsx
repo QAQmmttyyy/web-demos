@@ -1,6 +1,6 @@
 import React from 'react';
-import PlayerContext from '../PlayerContext';
-import './Player.css';
+import PlayerContext from '../../context/PlayerContext';
+import './Player.scss';
 
 class Player extends React.Component {
   constructor(props) {

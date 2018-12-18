@@ -3,24 +3,9 @@
 字体颜色：#333333 （深灰色）
 */
 
-.clearfix::after {
-  content: "";
-  /* display: block很关键 */
-  display: block;
-  clear: both;
-}
-.f-left {
-  float: left;
-}
-.f-right {
-  float: right;
-}
-.dis-hide {
-  display: none;
-}
-
 .player {
   width: 1080px;
+  height: 52px;
   margin: 0 auto;
   padding: 8px 0;
   border: 1px solid #f0d7ff;

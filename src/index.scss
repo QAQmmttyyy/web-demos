@@ -1,3 +1,7 @@
+html, body {
+  width: 100%;
+  height: 100%;
+}
 body {
   margin: 0;
   padding: 0;
@@ -11,4 +15,30 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+.clearfix::after {
+  content: "";
+  /* display: block很关键 */
+  display: block;
+  clear: both;
+}
+.f-left {
+  float: left;
+}
+.f-right {
+  float: right;
+}
+.dis-hide {
+  display: none !important;
+}
+.f-thide {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  word-wrap: normal;
+}
+
+#root {
+  height: 100%;
 }

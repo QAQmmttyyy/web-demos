@@ -1,0 +1,52 @@
+.mty-menu-submenu {
+  margin-bottom: 8px;
+
+  &-title {
+    position: relative;
+    height: 32px;
+    line-height: 32px;
+    padding-left: 10px;
+    padding-right: 30px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color: #8c8c8c;
+    cursor: pointer;
+  }
+
+  &-arrow {
+    position: absolute;
+    top: 50%;
+    right: 16px;
+    width: 10px;
+    font-size: 0;
+    line-height: 1;
+  }
+  &-arrow::before,
+  &-arrow::after {
+    content: "";
+    position: absolute;
+    width: 6px;
+    height: 1.5px;
+    border-radius: 2px;
+    background-color: #999999;
+  }
+  &-open::before {
+    transform: rotate(-45deg);
+  }
+  &-open::after {
+    transform: translateX(4px) rotate(45deg);
+  }
+  &-close::before {
+    transform: rotate(45deg);
+  }
+  &-close::after {
+    transform: translateX(4px) rotate(-45deg);
+  }
+
+  &-menu {
+    // 覆盖mty-menu对应属性
+    height: initial;
+    overflow: initial;
+  }
+}
