@@ -1,0 +1,49 @@
+$active-color: #cc3333;
+$height-size: 42px;
+
+.mty-tabs {
+  display: flex;
+  // normalize
+  margin: 0;
+  padding-left: 0;
+  list-style: none;
+
+  &-left {
+    justify-content: flex-start;
+  }
+  &-center {
+    justify-content: center;
+  }
+  &-right {
+    justify-content: flex-end;
+  }
+}
+
+.mty-tabs-item {
+  margin-right: 28px;
+  
+  &:last-child {
+    margin-right: 0;
+  }
+
+  a {
+    display: block;
+    box-sizing: border-box;
+    height: $height-size;
+    line-height: $height-size;
+    padding: 0 2px;
+    font-size: 14px;
+    color: #333333;
+    text-decoration: none;
+  }
+
+  a:hover {
+    color: $active-color;
+  }
+
+  & &-selected {
+    color: $active-color;
+    border-bottom: 2px solid $active-color;
+    transition: border 60ms ease-out;
+  }
+}

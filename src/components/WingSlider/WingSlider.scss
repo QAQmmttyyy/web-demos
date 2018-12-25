@@ -1,0 +1,141 @@
+$banner-z-index-default: 97;
+$banner-z-index-active-lr: 98;
+$banner-z-index-active: 100;
+$button-z-index: 99;
+$active-color: #cc3333;
+
+@mixin banner(
+  $left,
+  $opacity,
+  $zIndex,
+  $filter,
+  $transformOrigin,
+  $transform
+) {
+  left: $left;
+  opacity: $opacity;
+  z-index: $zIndex;
+  filter: $filter;
+  transform-origin: $transformOrigin;
+  transform: $transform;
+}
+
+.wing-slider {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  min-width: 762px;
+  max-width: 1040px;
+  margin: 0 auto;
+  margin-top: 20px;
+
+  &-banner {
+    width: 540px;
+    height: 200px;
+    position: absolute;
+    bottom: 0;
+    @include banner(
+      calc(50% - 270px),
+      0,
+      $banner-z-index-default,
+      brightness(1),
+      bottom,
+      scale(0.95)
+    );
+    transition: all 0.3s ease-out;
+
+    &-active {
+      z-index: $banner-z-index-active;
+      opacity: 1;
+      transform: scale(1);
+
+      &-left {
+        @include banner(
+          0,
+          1,
+          $banner-z-index-active-lr,
+          brightness(0.4),
+          left bottom,
+          scale(0.95)
+        );
+      }
+  
+      &-right {
+        @include banner(
+          calc(100% - 540px),
+          1,
+          $banner-z-index-active-lr,
+          brightness(0.4),
+          right bottom,
+          scale(0.95)
+        );
+      }
+    }
+
+  }
+
+  &:hover &-btn {
+    i {
+      display: block;
+    }
+  }
+
+  &-btn {
+    display: flex;
+    position: absolute;
+    top: 5%;
+    bottom: 0;
+    z-index: 99;
+    width: 50%;
+    cursor: pointer;
+
+    i {
+      display: none;
+      width: 48px;
+      height: 64px;
+      margin: auto;
+      background-repeat: no-repeat;
+      opacity: 0.4;
+      transition: opacity 0.1s ease-out;
+    }
+
+    &:hover {
+      i {
+        opacity: 0.8;
+      }
+    }
+  }
+
+  &-btn &-left-arrow {
+    margin-left: 0;
+    background-image: url(./images/thin-slider-left-arrow.png);
+    background-position: 16px 50%;
+  }
+  
+  &-btn &-right-arrow {
+    margin-right: 0;
+    background-image: url(./images/thin-slider-right-arrow.png);
+    background-position: calc(100% - 16px) 50%;
+  }
+  
+}
+
+.indicator {
+  margin: 12px 0 14px;
+  font-size: 0;
+  text-align: center;
+
+  &-item {
+    display: inline-block;
+    width: 16px;
+    height: 2px;
+    margin: 0 3px;
+    background-color: #e1e1e1;
+    transition: all 0.3s ease-out;
+    cursor: pointer;
+
+    &-active {
+      background-color: $active-color;
+    }
+  }
+}

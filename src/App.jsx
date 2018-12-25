@@ -22,6 +22,11 @@ class App extends React.Component {
       isPause: true,
       isLogin: false
     };
+    // bind this to method
+    this.play = this.play.bind(this);
+    this.pause = this.pause.bind(this);
+    this.playAll = this.playAll.bind(this);
+    this.addAll = this.addAll.bind(this);
     // TODO:
     // menuInfo 登录与未登录不同。
     // 登陆后更改，然后设置 isLogin 触发更新。
@@ -38,12 +43,6 @@ class App extends React.Component {
           },
           {
             // id: 0 对应于‘收藏的歌单’submenu
-            to: '/fm' || {},
-            iconType: 'fm',
-            description: '私人FM'
-          },
-          {
-            // id: 0 对应于‘收藏的歌单’submenu
             to: '/videos' || {},
             iconType: 'videos',
             description: '视频'
@@ -57,11 +56,6 @@ class App extends React.Component {
         ]
       }
     ];
-    // bind this to method
-    this.play = this.play.bind(this);
-    this.pause = this.pause.bind(this);
-    this.playAll = this.playAll.bind(this);
-    this.addAll = this.addAll.bind(this);
   }
   // player operation
   play(index) {
@@ -119,9 +113,9 @@ class App extends React.Component {
                 top: 0,
                 width: '100%',
                 height: 50,
+                backgroundColor: '#cc3333',
               }}
             >
-              QAQ Music
             </header>
             <div style={{ 
                 boxSizing: 'border-box',
@@ -130,23 +124,23 @@ class App extends React.Component {
               }}
             >
               {/* sideBar */}
-              <Sider menuInfo={this.menuInfo} />
+              <Sider menuInfo={this.menuInfo}/>
 
-              <div style={{ padding: 10 }}>
+              <div style={{ padding: '0 30px', height: '100%' }}>
                 <Switch>
                   {/* 常规一级路由 */}
-                  <Redirect exact from="/" to="/discover" />
-                  <Route path="/discover" component={Discover} />
+                  <Redirect exact from="/" to="/discover"/>
+                  <Route path="/discover" component={Discover}/>
 
                   {/* 提升层级：歌单/电台详情页，会有query params，与一级显示区域相同 */}
-                  <Route path="/playlist" component={PlayListDetail} />
-                  <Route path="/djradio" component={DjRadioDetail} />
+                  <Route path="/playlist" component={PlayListDetail}/>
+                  <Route path="/djradio" component={DjRadioDetail}/>
 
                   {/* 提升层级：song详情页，会有query params，显示区域为：除header/footer以外 */}
-                  <Route path="/song" component={SongDetail} />
+                  <Route path="/song" component={SongDetail}/>
 
                   {/* 提升层级：视频详情页，会有query params，显示区域为：除header以外 */}
-                  <Route path="/video" component={VideoDetail} />
+                  <Route path="/video" component={VideoDetail}/>
                 </Switch>
               </div>
             </div>

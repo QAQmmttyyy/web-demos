@@ -272,7 +272,9 @@ class Player extends React.Component {
         {({ playerState, play, pause }) => {
           const playingList = playerState.playingList;
           const currentSong = playerState.currentSong;
+
           let playProgress = '0';
+          
           if (this.curSongIndex === playerState.curSongIndex) {
             playProgress = this.state.progress;
           }
