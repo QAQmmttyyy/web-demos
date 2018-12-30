@@ -1,14 +1,15 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
+
 import PlayerContext from './context/PlayerContext';
 
 import Sider from './components/Sider/Sider.jsx';
 import Discover from './components/Discover/Discover.jsx';
-import PlayListDetail from './components/PlayListDetail/PlayListDetail.jsx';
+import PlaylistDetail from './components/PlaylistDetail/PlaylistDetail.jsx';
 import DjRadioDetail from './components/DjRadioDetail/DjRadioDetail.jsx';
 import VideoDetail from './components/VideoDetail/VideoDetail.jsx';
 import SongDetail from './components/SongDetail/SongDetail.jsx';
-// import Player from './components/Player/Player.jsx';
+import Player from './components/Player/Player.jsx';
 
 class App extends React.Component {
   constructor(props) {
@@ -94,6 +95,7 @@ class App extends React.Component {
     }
   }
 
+  // render
   render() {
     return (
       <Router>
@@ -113,7 +115,7 @@ class App extends React.Component {
                 top: 0,
                 width: '100%',
                 height: 50,
-                backgroundColor: '#cc3333',
+                // backgroundColor: '#cc3333',
               }}
             >
             </header>
@@ -126,14 +128,18 @@ class App extends React.Component {
               {/* sideBar */}
               <Sider menuInfo={this.menuInfo}/>
 
-              <div style={{ padding: '0 30px', height: '100%' }}>
+              <div style={{
+                height: '100%',
+                overflowY: 'auto',
+                overflowX: 'hidden',
+              }}>
                 <Switch>
                   {/* 常规一级路由 */}
                   <Redirect exact from="/" to="/discover"/>
                   <Route path="/discover" component={Discover}/>
 
                   {/* 提升层级：歌单/电台详情页，会有query params，与一级显示区域相同 */}
-                  <Route path="/playlist" component={PlayListDetail}/>
+                  <Route path="/playlist" component={PlaylistDetail}/>
                   <Route path="/djradio" component={DjRadioDetail}/>
 
                   {/* 提升层级：song详情页，会有query params，显示区域为：除header/footer以外 */}
@@ -149,10 +155,11 @@ class App extends React.Component {
                 bottom: 0,
                 width: '100%',
                 height: 50,
-                borderTop: "1px solid #e1e1e1"
+                borderTop: "1px solid #e1e1e1",
+                backgroundColor: "#ffffff",
               }}
             >
-              {/* <Player /> */}
+              <Player />
             </footer>
           {/* </div> */}
         </PlayerContext.Provider>

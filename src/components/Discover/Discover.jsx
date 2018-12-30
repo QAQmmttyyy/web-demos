@@ -3,11 +3,13 @@ import { Route } from 'react-router-dom';
 
 import Tabs from '../Tabs/Tabs.jsx';
 import Personality from '../Personality/Personality';
-import PlayList from '../PlayList/PlayList';
+import Playlist from '../Playlist/Playlist.jsx';
 import DjRadio from '../DjRadio/DjRadio';
 
 class Discover extends React.Component {
+  
   render() {
+    
     const { match } = this.props;
     const tabsInfo = [
       {
@@ -49,7 +51,7 @@ class Discover extends React.Component {
         }}/>
         {/* 二级路由 */}
         <Route exact path={`${match.path}`} component={Personality}/>
-        <Route path={`${match.path}/playlist`} component={PlayList}/>
+        <Route path={`${match.path}/playlist`} component={Playlist}/>
         <Route path={`${match.path}/djradio`} component={DjRadio}/>
       </React.Fragment>
     );

@@ -1,4 +1,5 @@
 import React from 'react';
+
 import PlayerContext from '../../context/PlayerContext';
 import './Player.scss';
 
@@ -64,6 +65,7 @@ class Player extends React.Component {
       console.log(reason);
     });
   }
+
   pauseAudio() {
     this.audioRef.current.pause();
     this.setState({ isPauseIco: false });
@@ -81,6 +83,7 @@ class Player extends React.Component {
       funcPause();
     }
   }
+
   handleClickPrevBtn(funcPlay) {
     if (this.isNoAudio()) {
       return;
@@ -88,6 +91,7 @@ class Player extends React.Component {
     const index = this.getIndex(true);
     funcPlay(index);
   }
+
   handleClickNextBtn(funcPlay) {
     if (this.isNoAudio()) {
       return;
@@ -95,10 +99,12 @@ class Player extends React.Component {
     const index = this.getIndex();
     funcPlay(index);
   }
+
   handleClickModeBtn() {
     const nextIndex = (this.state.modeIndex + 1) % this.playMode.length;
     this.setState({ modeIndex: nextIndex });
   }
+
   handleClickListBtn() {
     this.setState((state) => ({
       isOpen: !state.isOpen
@@ -132,6 +138,7 @@ class Player extends React.Component {
 
     funcPause();
   }
+
   handleMouseMoveProgBtn(ev) {
     const
       prevCurTime = this.state.curTime,
@@ -166,6 +173,7 @@ class Player extends React.Component {
       this.setState({ progress: progress });
     }
   }
+
   handleMouseUpProgBtn(funcPlay, ev) {
     ev.preventDefault();
 
@@ -196,6 +204,7 @@ class Player extends React.Component {
       curTime: '00:00'
     });
   }
+
   handleTimeUpdate() {
     const
       old = this.state.curTime,
@@ -215,6 +224,7 @@ class Player extends React.Component {
       this.setState({ progress: progress });
     }
   }
+
   handleEnded(funcPlay) {
     const index = this.getIndex();
     funcPlay(index);
@@ -224,6 +234,7 @@ class Player extends React.Component {
   isNoAudio() {
     return (this.audioAmount === 0 ? true : false);
   }
+
   timeFormat(timeNum) {// mm:ss
     const minutes = parseInt(timeNum / 60),  // 商
           seconds = parseInt(timeNum % 60),  // 余数
@@ -232,6 +243,7 @@ class Player extends React.Component {
           curTimeStr = `${minStr}:${secStr}`;
     return curTimeStr;
   }
+
   getIndex(isPrev) {
     if (isPrev === undefined) {
       isPrev = false;
@@ -255,6 +267,7 @@ class Player extends React.Component {
     }
     return index;
   }
+
   getElemClientPageLeft(element){
     let wholeLeft = 0;  // elem client left to page
     let parent = element;
@@ -289,9 +302,7 @@ class Player extends React.Component {
               <audio 
                 ref={this.audioRef}
                 src={
-                  currentSong.url 
-                    ? `${process.env.PUBLIC_URL}/${currentSong.url}` 
-                    : ''
+                  currentSong.url ? `${process.env.PUBLIC_URL}/${currentSong.url}` : ''
                 }
                 onDurationChange={() => this.handleDurationChange()}
                 onTimeUpdate={() => this.handleTimeUpdate()}
@@ -307,9 +318,7 @@ class Player extends React.Component {
                 ></span>
                 <span 
                   className={
-                    'btn play-btn f-left' + (
-                      this.state.isPauseIco ? ' pause' : ''
-                    )
+                    'btn play-btn f-left' + (this.state.isPauseIco ? ' pause' : '')
                   }
                   onClick={() => this.handleClickPlayBtn(play, pause)}
                 ></span>
@@ -349,15 +358,17 @@ class Player extends React.Component {
           
               {/* <!-- volume 播放模式 歌曲列表（控制区） --> */}
               <div className="right-controls f-left clearfix">
+                {/* volumn */}
                 <div></div>
+                {/* mode btn */}
                 <div 
                   className={
-                    'mode-btn f-left ' + 
-                    this.playMode[this.state.modeIndex].className
+                    'mode-btn f-left ' + this.playMode[this.state.modeIndex].className
                   }
                   onClick={() => this.handleClickModeBtn()}
                 >
                 </div>
+                {/* list panel */}
                 <div 
                   className="list-btn-wrap f-left"
                   onClick={() => this.handleClickListBtn()}
@@ -370,20 +381,14 @@ class Player extends React.Component {
               </div>
 
               {/* <!-- 播放列表 --> */}
-              <div 
-                className={
-                  'playlist-panel' + (this.state.isOpen ? '' : ' dis-hide')
-                }
-              >
+              <div className={
+                'playlist-panel' + (this.state.isOpen ? '' : ' dis-hide')
+              }>
                 <ul>
                   {playingList.map(song => (
                     <li 
                       key={song.id}
-                      className={
-                        currentSong.id === song.id 
-                          ? 'cur-play' 
-                          : ''
-                      }
+                      className={currentSong.id === song.id ? 'cur-play' : ''}
                     >
                       {song.name}-{song.artists}
                     </li>

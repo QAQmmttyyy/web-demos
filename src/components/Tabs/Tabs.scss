@@ -4,9 +4,9 @@ $height-size: 42px;
 .mty-tabs {
   display: flex;
   // normalize
-  margin: 0;
-  padding-left: 0;
-  list-style: none;
+  // margin: 0;
+  // padding-left: 0;
+  // list-style: none;
 
   &-left {
     justify-content: flex-start;
@@ -33,6 +33,7 @@ $height-size: 42px;
     line-height: $height-size;
     padding: 0 2px;
     font-size: 14px;
+    // font-weight: 600;
     color: #333333;
     text-decoration: none;
   }

@@ -1,0 +1,46 @@
+$font-size: 12px;
+$padding-size: 24px;
+$line-height-size: 20px;
+
+
+.pl-wrap {
+  font-size: 0;
+  min-width: 762 + $padding-size;
+  max-width: 1040 + $padding-size;
+  margin: 20px auto;
+}
+.pl-content {
+  margin-right: -$padding-size;
+}
+.pl-item {
+  display: inline-block;
+  box-sizing: border-box; // 方案一
+  width: 20%;
+  padding-right: $padding-size;
+  padding-bottom: $font-size * 3;
+
+  font-size: $font-size;
+  line-height: $line-height-size;
+  vertical-align: top;
+
+  &-cover {
+    margin-bottom: $font-size;
+
+    img {
+      display: block;
+      width: 100%; // 方案一
+    }
+  }
+
+  &-name a {
+    color: #000000;
+  }
+
+  &-author a, &-playcount {
+    color: #999999;
+  }
+
+  &-author, &-playcount {
+    height: $line-height-size;
+  }
+}
