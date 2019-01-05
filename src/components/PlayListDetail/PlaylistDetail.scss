@@ -1,7 +1,7 @@
 $primary-color: #cc3333;
 $primary-color-darker: #b12323;
 $primary-color-lighter: #d95d59;
-$label-color: rgb(224, 63, 64);
+$label-color: #e03f40;
 $tag-link-color: rgb(12, 115, 194);
 $text-color-1: #000000;
 $text-color-2: #333333;
@@ -43,7 +43,7 @@ $cover-size: 198px;
     &-title {
       margin: 0;
       font-size: 24px;
-      font-weight: bold;
+      font-weight: medium;
       line-height: 28px;
       color: $text-color-2;
       // 单词换行 规则

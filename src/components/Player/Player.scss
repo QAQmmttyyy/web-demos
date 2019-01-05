@@ -2,149 +2,225 @@
 样式主色：#7800bd （一种紫色）
 字体颜色：#333333 （深灰色）
 */
+$btn-size: 34px;
+$btn-bg-size: 24px;
 
-.player {
-  width: 1080px;
-  height: 52px;
-  margin: 0 auto;
-  padding: 8px 0;
-  border: 1px solid #f0d7ff;
-}
-.player .btn {
-  width: 34px;
-  height: 34px;
-  background-repeat: no-repeat;
-  background-position: center center;
-  /* background-color: #7800bd; */
-  cursor: pointer;
-}
-.player .left-controls .prev-btn {
-  margin-left: 30px;
-  background-image: url(./assets/prev-circlebg.png);
-  background-repeat: no-repeat;
-  background-size: 88%;
-}
-.player .left-controls .play-btn {
-  margin-left: 20px;
-  background-image: url(./assets/play.png);
-  background-repeat: no-repeat;
-  background-size: 100%;
-}
-.player .left-controls .pause {
-  background-image: url(./assets/pause.png);
-}
-.player .left-controls .next-btn {
-  margin-left: 20px;
-  background-image: url(./assets/next-circlebg.png);
-  background-repeat: no-repeat;
-  background-size: 88%;
-}
-.player .mid-controls {
-  padding: 15px 46px;
-  margin-left: 32px;
-  margin-right: 24px;
-}
-.player .mid-controls .progress {
-  width: 496px;
-  height: 4px;
-}
-.player .mid-controls .progress .played-time,
-.player .mid-controls .progress .whole-time {
-  font-size: 12px;
-  line-height: 12px;
-  color: #333333;
-}
-.player .mid-controls .progress .played-time {
-  margin-top: -5px;
-  margin-left: -46px;
-}
-.player .mid-controls .progress .whole-time {
-  margin-top: -5px;
-  margin-right: -46px;
-}
-.player .mid-controls .progress .progress-behind {
+$progress-height: 2px;
+$progress-btn-size: 10px;
+
+$volume-btn-bg-size: 14px;
+
+.audio-controls-panel {
+  display: flex;
+  align-items: center;
   width: 100%;
-  height: 100%;
-  background-color: #cccccc;
-  border-radius: 3px;
-}
-.player .mid-controls .progress .progress-front {
-  /* 此处 width 由 js 控制 */
-  width: 0;
-  height: 100%;
-  background-color: #7800bd;
-  border-radius: 3px;
-}
-.player .mid-controls .progress .progress-front .progress-btn {
-  display: block;
-  width: 16px;
-  height: 16px;
-  margin: -6px -8px 0 0;
-  border-radius: 50%;
-  background-image: url(./assets/progress-button-fill.png);
-  background-repeat: no-repeat;
-  background-size: 100%;
-}
-.player .mid-controls .progress .progress-front .progress-btn:hover {
-  box-shadow: 0 0 10px #cccccc;
-}
+  height: 54px;
 
-/* right-controls */
-.player .right-controls .mode-btn {
-  width: 18px;
-  height: 34px;
-  background-repeat: no-repeat;
-  background-size: 100%;
-  background-position-y: center;
-  cursor: pointer;
-}
-.player .right-controls .loop-mode {
-  background-image: url(./assets/play-in-loop.png);
-}
-/* .player .right-controls .single-mode {
-  background-image: url(play-in-loop.png);
-} */
-.player .right-controls .random-mode {
-  background-image: url(./assets/play-in-random.png);
-}
-.player .right-controls .list-btn-wrap {
-  padding-left: 20px;
-  margin-left: 18px;
-  cursor: pointer;
-}
-.player .right-controls .list-btn-wrap .list-btn {
-  width: 20px;
-  height: 34px;
-  margin-left: -20px;
-  background-image: url(./assets/play-list.png);
-  background-repeat: no-repeat;
-  background-size: 100%;
-  background-position-y: center;
-  background-color: #ffffff;
-}
-.player .right-controls .list-btn-wrap .songs-num {
-  height: 18px;
-  padding: 8px 4px;
-  font-size: 12px;
-  line-height: 18px;
-  text-align: left;
-  color: #7800bd;
-}
-.player .playlist-panel {
-  width: 300px;
-  height: 200px;
-  border: 1px solid #000;
-  position: absolute;
-  bottom: 52px;
-  right: 0;
-  overflow: auto;
-}
-.player .playlist-panel ul {
-  padding-left: 0;
-  list-style: none;
-  font-size: 12px;
-  color: #333333;
-}
-.player .playlist-panel li.cur-play {
-  color: #7800bd;
+  .btn {
+    flex: 0 0 auto;
+    width: $btn-size;
+    height: $btn-size;
+    min-width: $btn-size;
+    // background-size: $bg-img-size;
+    background-size: 58%;
+    background-repeat: no-repeat;
+    background-position: center center;
+    cursor: pointer;
+    font-size: 0;
+  }
+
+  .prev {
+    margin-left: 35px;
+    background-image: url(./assets/icn/prev.png);
+  }
+  .next {
+    margin-right: 35px;
+    background-image: url(./assets/icn/next.png);
+  }
+  .play {
+    background-image: url(./assets/icn/play.png);
+  }
+  .pause {
+    background-image: url(./assets/icn/pause.png);
+  }
+  .play,
+  .pause {
+    margin: 0 18px;
+  }
+
+  // time
+  .played-time,
+  .whole-time {
+    font-family: Roboto-Regular, Roboto, sans-serif;
+    font-size: 14px;
+    line-height: 1;
+    opacity: 0.87;
+    color: rgb(0, 0, 0);
+    text-shadow: rgb(255, 255, 255) 0px 0px 10px;
+  }
+  .played-time {
+    margin-right: 16px;
+  }
+  .whole-time {
+    margin-left: 16px;
+  }
+
+  .progress {
+    position: relative;
+    flex: 1 1 auto;
+    height: $progress-height;
+    border-radius: $progress-height;
+    background-color: #d9d9d9;
+
+    .progress-behind,
+    .progress-front {
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+    }
+    // 加载进度
+    .progress-behind {
+      width: 0;
+      background-color: #999999;
+      border-radius: $progress-height;
+    }
+    // 播放进度
+    .progress-front {
+      width: 0;
+      background-color: #000000;
+      border-radius: $progress-height;
+      
+      .progress-btn {
+        display: block;
+        width: $progress-btn-size;
+        height: $progress-btn-size;
+        margin-top: (-($progress-btn-size / 2 - $progress-height / 2));
+        margin-right: (-($progress-btn-size / 2));
+        border-radius: $progress-btn-size;
+        background-color: #000000;
+        cursor: pointer;
+      }
+      .progress-btn:hover {
+        box-shadow: 0 0 10px #cccccc;
+      }
+    }
+  }
+
+  // volume
+  .volume-wrap {
+    display: flex;
+    align-items: center;
+    flex: 0 0 auto;
+    padding-left: 28px;
+    padding-right: 14px;
+
+    .volume,
+    .muted {
+      background-size: $btn-bg-size - 2; // 22
+    }
+    .volume {
+      background-image: url(data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjMDAwMDAwIiBoZWlnaHQ9IjI0IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSIyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxwYXRoIGQ9Ik0zIDl2Nmg0bDUgNVY0TDcgOUgzem0xMy41IDNjMC0xLjc3LTEuMDItMy4yOS0yLjUtNC4wM3Y4LjA1YzEuNDgtLjczIDIuNS0yLjI1IDIuNS00LjAyek0xNCAzLjIzdjIuMDZjMi44OS44NiA1IDMuNTQgNSA2Ljcxcy0yLjExIDUuODUtNSA2LjcxdjIuMDZjNC4wMS0uOTEgNy00LjQ5IDctOC43N3MtMi45OS03Ljg2LTctOC43N3oiLz4KICAgIDxwYXRoIGQ9Ik0wIDBoMjR2MjRIMHoiIGZpbGw9Im5vbmUiLz4KPC9zdmc+);
+    }
+    .muted {
+      background-image: url(data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjMDAwMDAwIiBoZWlnaHQ9IjI0IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSIyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxwYXRoIGQ9Ik0xNi41IDEyYzAtMS43Ny0xLjAyLTMuMjktMi41LTQuMDN2Mi4yMWwyLjQ1IDIuNDVjLjAzLS4yLjA1LS40MS4wNS0uNjN6bTIuNSAwYzAgLjk0LS4yIDEuODItLjU0IDIuNjRsMS41MSAxLjUxQzIwLjYzIDE0LjkxIDIxIDEzLjUgMjEgMTJjMC00LjI4LTIuOTktNy44Ni03LTguNzd2Mi4wNmMyLjg5Ljg2IDUgMy41NCA1IDYuNzF6TTQuMjcgM0wzIDQuMjcgNy43MyA5SDN2Nmg0bDUgNXYtNi43M2w0LjI1IDQuMjVjLS42Ny41Mi0xLjQyLjkzLTIuMjUgMS4xOHYyLjA2YzEuMzgtLjMxIDIuNjMtLjk1IDMuNjktMS44MUwxOS43MyAyMSAyMSAxOS43M2wtOS05TDQuMjcgM3pNMTIgNEw5LjkxIDYuMDkgMTIgOC4xOFY0eiIvPgogICAgPHBhdGggZD0iTTAgMGgyNHYyNEgweiIgZmlsbD0ibm9uZSIvPgo8L3N2Zz4=);
+    }
+    .volume-bar {
+      flex: 0 0 auto;
+      width: 100px;
+      height: $progress-height;
+      border-radius: $progress-height;
+      background-color: #d9d9d9;
+  
+      .volume-bar-front {
+        width: 0;
+        height: 100%;
+        background-color: #000000;
+        border-radius: $progress-height;
+        // transition: width 80ms ease-out;
+        
+        .volume-bar-btn {
+          display: none;
+          width: $progress-btn-size;
+          height: $progress-btn-size;
+          margin-top: (-($progress-btn-size / 2 - $progress-height / 2));
+          margin-right: (-($progress-btn-size / 2));
+          border-radius: $progress-btn-size;
+          background-color: #000000;
+          cursor: pointer;
+  
+          &:hover {
+            box-shadow: 0 0 10px #cccccc;
+          }
+        }
+      }
+    }
+
+    &:hover {
+      .volume-bar-front {
+        .volume-bar-btn {
+          display: block;
+        }
+      }
+    }
+  }
+
+  // mode
+  // .loop-mode,
+  // .single-mode,
+  // .random-mode {
+  //   margin-left: 14px;
+  // }
+  .loop-mode {
+    background-image: url(./assets/icn/loop.png);
+  }
+  .single-mode {
+    background-image: url(./assets/icn/single-loop.png);
+  }
+  .random-mode {
+    background-image: url(./assets/icn/random.png);
+  }
+
+  // list
+  .list-btn-wrap {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    margin-left: 2px;
+    margin-right: 36px;
+    cursor: pointer;
+
+    .list-btn {
+      background-image: url(./assets/icn/play-list.png);
+    }
+    .songs-num {
+      padding: 8px 4px;
+      margin-left: -9px;
+      
+      font-size: 12px;
+      text-align: left;
+      color: #000000;
+    }
+  }
+
+
+  .playlist-panel {
+    width: 300px;
+    height: 200px;
+    border: 1px solid #000;
+    position: absolute;
+    bottom: 52px;
+    right: 0;
+    overflow: auto;
+    
+    ul {
+      padding-left: 0;
+      list-style: none;
+      font-size: 12px;
+      color: #333333;
+    }
+    li.cur-play {
+      color: #7800bd;
+    }
+  }
 }

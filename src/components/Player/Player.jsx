@@ -9,34 +9,49 @@ class Player extends React.Component {
 
     this.state = {
       modeIndex: 0,
-      volume: 1.0,
+      volumePercent: '100%',
       duration: '00:00',
       curTime: '00:00',
-      progress: '0',
+      loadProgress: '0',
+      playProgress: '0',
       isPauseIco: false,
-      isOpen: false
+      isOpen: false,
     };
     this.audioRef = React.createRef();
     this.progressFrontRef = React.createRef();
+    this.volumeBarFrontRef = React.createRef();
+
     this.curSongIndex = -1;
     this.audioAmount = 0;
     this.isPause = true; // 指示 进行播放还是暂停
+    this.songUrlApi = 'https://music.163.com/song/media/outer/url?id='; // ?id=350909 会返回一个重定向响应
+    this.currentSong = {};
 
     this.progressBarState = {
       pageX: 0,
       entireWidth: 0,
       progressBtnCenterOffsetToCursorX: 0,
       progress: 0,
-      curTime: 0
+      curTime: 0,
+    };
+    this.volumeBarState = {
+      pageX: 0,
+      entireWidth: 0,
+      volumeBarBtnCenterOffsetToCursorX: 0,
+      volume: 1.0, // 暂存音量值
     };
     this.playMode = [
       {
         desc: '列表循环',
-        className: 'loop-mode'
+        className: 'loop-mode',
+      },
+      {
+        desc: '单曲循环',
+        className: 'single-mode',
       },
       {
         desc: '随机播放',
-        className: 'random-mode'
+        className: 'random-mode',
       }
     ];
   }
@@ -88,6 +103,7 @@ class Player extends React.Component {
     if (this.isNoAudio()) {
       return;
     }
+    this.setState({ loadProgress: '0', playProgress: '0' });
     const index = this.getIndex(true);
     funcPlay(index);
   }
@@ -97,11 +113,22 @@ class Player extends React.Component {
       return;
     }
     const index = this.getIndex();
+    this.setState({ loadProgress: '0', playProgress: '0' });
     funcPlay(index);
+  }
+
+  handleClickVolumeBtn() {
+    const volume = this.volumeBarState.volume;
+    let audioElem = this.audioRef.current;
+
+    audioElem.volume = audioElem.volume ? 0 : (volume ? volume : 1);
+    // this.setState({ volumePercent: `${audioElem.volume * 100}%` });
   }
 
   handleClickModeBtn() {
     const nextIndex = (this.state.modeIndex + 1) % this.playMode.length;
+
+    this.audioRef.current.loop = nextIndex === 1 ? true : false;
     this.setState({ modeIndex: nextIndex });
   }
 
@@ -144,7 +171,7 @@ class Player extends React.Component {
       prevCurTime = this.state.curTime,
       duration = this.audioRef.current.duration,
       state = this.progressBarState;
-    console.log(duration);
+    // console.log(duration);
     const entireWidth = state.entireWidth;
 
     let
@@ -167,10 +194,10 @@ class Player extends React.Component {
     if (prevCurTime !== curTimeStr) {
       this.setState({
         curTime: curTimeStr,
-        progress: progress
+        playProgress: progress
       });
     } else {
-      this.setState({ progress: progress });
+      this.setState({ playProgress: progress });
     }
   }
 
@@ -195,14 +222,84 @@ class Player extends React.Component {
     funcPlay(index);
   }
 
+  // volume
+  handleMouseDownVolumeBarBtn(ev) {
+    ev.preventDefault();
+
+    const 
+      target = ev.currentTarget,
+      volumeBarFront = this.volumeBarFrontRef.current,
+      state = this.volumeBarState;
+
+    state.pageX = this.getElemClientPageLeft(volumeBarFront);
+    state.entireWidth = volumeBarFront.parentElement.clientWidth;
+    state.volumeBarBtnCenterOffsetToCursorX = 
+        this.getElemClientPageLeft(target) + 
+        (target.offsetWidth / 2) - 
+        ev.pageX;
+  
+    // bind 鼠标脱离volumeBarBtn也起作用
+    const doc = window.document;
+    doc.onmousemove = this.handleMouseMoveVolumeBarBtn.bind(this);
+    doc.onmouseup = this.handleMouseUpVolumeBarBtn.bind(this);
+  }
+
+  handleMouseMoveVolumeBarBtn(ev) {
+    const state = this.volumeBarState;
+
+    const entireWidth = state.entireWidth;
+
+    let volumeBarFrontWidth = ev.pageX + 
+          state.volumeBarBtnCenterOffsetToCursorX - state.pageX;
+
+    if (volumeBarFrontWidth < 0) {
+      volumeBarFrontWidth = 0;
+    } else if (volumeBarFrontWidth > entireWidth) {
+      volumeBarFrontWidth = entireWidth;
+    }
+
+    state.volume = volumeBarFrontWidth / entireWidth;
+    this.audioRef.current.volume = state.volume;
+    // this.setState({ volumePercent: `${state.volume * 100}%` });
+  }
+
+  handleMouseUpVolumeBarBtn(ev) {
+    ev.preventDefault();
+
+    const doc = window.document;
+
+    doc.onmousemove = null;
+    doc.onmouseup = null;
+  }
+
   // Audio ev handle
+  handleVolumeChange() {
+    // 这样就不能给volume bar 添加transition
+    this.setState({ volumePercent: `${this.audioRef.current.volume * 100}%` });
+  }
+
   handleDurationChange() {
     console.log('handleDurationChange');
     this.setState({
       duration: this.timeFormat(this.audioRef.current.duration),
-      progress: '0',
+      playProgress: '0',
       curTime: '00:00'
     });
+  }
+
+  handleLoadProcess(ev) {
+    const { buffered, duration } = this.audioRef.current;
+
+    let loadProgress = '';
+
+    if (buffered.length === 1) {
+      console.log(buffered, buffered.start(0), buffered.end(0), duration);
+      loadProgress = `${(buffered.end(0) / duration * 100).toFixed(1)}%`;
+    } else {
+      const index = buffered.length - 1;
+      loadProgress = `${(buffered.end(index) / duration * 100).toFixed(1)}%`;
+    }
+    this.setState({ loadProgress: loadProgress });
   }
 
   handleTimeUpdate() {
@@ -218,16 +315,29 @@ class Player extends React.Component {
     if (old !== curTimeStr) {
       this.setState({
         curTime: curTimeStr,
-        progress: progress
+        playProgress: progress
       });
     } else if (currentTime === duration) {
-      this.setState({ progress: progress });
+      this.setState({ playProgress: progress });
     }
   }
 
   handleEnded(funcPlay) {
     const index = this.getIndex();
+    this.setState({ loadProgress: '0', playProgress: '0' });
     funcPlay(index);
+  }
+
+  handleAudioError() {
+    const audioElem = this.audioRef.current;
+    console.log(audioElem.error);
+    
+    // TODO 完善无版权歌曲处理
+    if (audioElem.error.code === 2) {
+      audioElem.load();
+      audioElem.currentTime = parseFloat(this.state.playProgress) / 100;
+      console.log(this.state.playProgress);
+    }
   }
 
   // Util
@@ -251,6 +361,7 @@ class Player extends React.Component {
     let index = 0;
     switch (this.state.modeIndex) {
       case 0:
+      case 1:
         if (isPrev) {
           index = (
               this.curSongIndex - 1 + this.audioAmount
@@ -259,7 +370,7 @@ class Player extends React.Component {
           index = (this.curSongIndex + 1) % this.audioAmount;
         }
         break;
-      case 1:
+      case 2:
         index = parseInt(Math.random() * this.audioAmount);
         break;
       default:
@@ -283,104 +394,140 @@ class Player extends React.Component {
     return (
       <PlayerContext.Consumer>
         {({ playerState, play, pause }) => {
-          const playingList = playerState.playingList;
-          const currentSong = playerState.currentSong;
+          const {
+            playingList,
+            currentSong,
+            curSongIndex,
+            isPause,
+          } = playerState;
 
-          let playProgress = '0';
-          
-          if (this.curSongIndex === playerState.curSongIndex) {
-            playProgress = this.state.progress;
-          }
-
-          this.curSongIndex = playerState.curSongIndex;
+          this.curSongIndex = curSongIndex;
           this.audioAmount = playingList.length;
-          this.isPause = playerState.isPause;
+          this.isPause = isPause;
+          this.currentSong = currentSong;
+
+          const volumeBtnCls = `btn ${
+            parseFloat(this.state.volumePercent) ? 'volume' : 'muted'
+          }`;
 
           return (
-            <div className="player clearfix">
+            <div className="audio-controls-panel">
               {/* music */}
               <audio 
                 ref={this.audioRef}
                 src={
-                  currentSong.url ? `${process.env.PUBLIC_URL}/${currentSong.url}` : ''
+                  currentSong.link ? `${this.songUrlApi}${currentSong.id}` : ''
                 }
+                onVolumeChange={() => this.handleVolumeChange()}
                 onDurationChange={() => this.handleDurationChange()}
+                onProgress={(ev) => this.handleLoadProcess(ev)}
                 onTimeUpdate={() => this.handleTimeUpdate()}
                 onEnded={() => this.handleEnded(play)}
+                onError={() => this.handleAudioError()}
               >
               </audio>
 
               {/* prev play/pause next */}
-              <div className="left-controls f-left clearfix">
-                <span 
-                  className="btn prev-btn f-left"
-                  onClick={() => this.handleClickPrevBtn(play)}
-                ></span>
-                <span 
-                  className={
-                    'btn play-btn f-left' + (this.state.isPauseIco ? ' pause' : '')
-                  }
-                  onClick={() => this.handleClickPlayBtn(play, pause)}
-                ></span>
-                <span 
-                  className="btn next-btn f-left"
-                  onClick={() => this.handleClickNextBtn(play)}
-                ></span>
-              </div>
+              <span 
+                className="btn prev"
+                onClick={() => this.handleClickPrevBtn(play)}
+              >
+                prev
+              </span>
+
+              <span 
+                className={
+                  'btn play' + (this.state.isPauseIco ? ' pause' : '')
+                }
+                onClick={() => this.handleClickPlayBtn(play, pause)}
+              >
+                play|pause
+              </span>
+
+              <span 
+                className="btn next"
+                onClick={() => this.handleClickNextBtn(play)}
+              >
+                next
+              </span>
           
-              {/* <!-- time progress --> */}
-              <div className="mid-controls f-left clearfix">
-                <div className="progress f-left">
-                  {/* <!-- time --> */}
-                  <div className="played-time f-left">
-                    {this.state.curTime}
-                  </div>
-                  <div className="whole-time f-right">
-                    {this.state.duration}
-                  </div>
-                  {/* <!-- progress --> */}
-                  <div className="progress-behind">
-                    <div 
-                      ref={this.progressFrontRef}
-                      className="progress-front"
-                      style={{ width: playProgress }}
-                    >
-                      <i 
-                        className="btn progress-btn f-right"
-                        onMouseDown={
-                          (ev) => this.handleMouseDownProgBtn(play, pause, ev)
-                        }
-                      ></i>
-                    </div>
-                  </div>
-                </div>
+              {/* current-time */}
+              <div className="played-time">
+                {this.state.curTime}
               </div>
-          
-              {/* <!-- volume 播放模式 歌曲列表（控制区） --> */}
-              <div className="right-controls f-left clearfix">
-                {/* volumn */}
-                <div></div>
-                {/* mode btn */}
+
+              {/* progress */}
+              <div className="progress">
                 <div 
-                  className={
-                    'mode-btn f-left ' + this.playMode[this.state.modeIndex].className
-                  }
-                  onClick={() => this.handleClickModeBtn()}
+                  className="progress-behind"
+                  style={{ width: this.state.loadProgress }}
                 >
                 </div>
-                {/* list panel */}
                 <div 
-                  className="list-btn-wrap f-left"
-                  onClick={() => this.handleClickListBtn()}
+                  ref={this.progressFrontRef}
+                  className="progress-front"
+                  style={{ width: this.state.playProgress }}
                 >
-                  <i className="list-btn f-left"></i>
-                  <div className="songs-num">
-                    { playingList.length }
+                  <i 
+                    className="progress-btn f-right"
+                    onMouseDown={
+                      (ev) => this.handleMouseDownProgBtn(play, pause, ev)
+                    }
+                  ></i>
+                </div>
+              </div>
+
+              {/* remaining-time */}
+              <div className="whole-time">
+                {this.state.duration}
+              </div>
+              
+              {/* volume */}
+              <div className="volume-wrap">
+                {/* volume btn */}
+                <span 
+                  className={volumeBtnCls}
+                  onClick={() => this.handleClickVolumeBtn()}
+                >
+                  volume
+                </span>
+                {/* volumn bar */}
+                <div className="volume-bar">
+                  <div 
+                    className="volume-bar-front"
+                    style={{ width: this.state.volumePercent }}
+                    ref={this.volumeBarFrontRef}
+                  >
+                    <i 
+                      className="volume-bar-btn f-right"
+                      onMouseDown={(ev) => this.handleMouseDownVolumeBarBtn(ev)}
+                    ></i>
                   </div>
                 </div>
               </div>
 
-              {/* <!-- 播放列表 --> */}
+              {/* mode */}
+              <div 
+                className={
+                  'btn ' + this.playMode[this.state.modeIndex].className
+                }
+                onClick={() => this.handleClickModeBtn()}
+              >
+                mode
+              </div>
+
+              {/* list-btn */}
+              <div 
+                className="list-btn-wrap"
+                onClick={() => this.handleClickListBtn()}
+              >
+                <i className="btn list-btn"></i>
+                <span className="songs-num">
+                  { this.audioAmount ? this.audioAmount : '' }
+                </span>
+              </div>
+
+              {/* 播放列表 */}
               <div className={
                 'playlist-panel' + (this.state.isOpen ? '' : ' dis-hide')
               }>
@@ -390,7 +537,7 @@ class Player extends React.Component {
                       key={song.id}
                       className={currentSong.id === song.id ? 'cur-play' : ''}
                     >
-                      {song.name}-{song.artists}
+                      {song.name}-{song.artists.map(val => val.name).join('/')}
                     </li>
                   ))}
                 </ul>

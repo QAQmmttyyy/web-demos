@@ -26,13 +26,16 @@ class PlayListDetail extends React.Component {
     window.fetch(pldUrl).then(
       response => response.statusText === 'OK' ? response.json() : {}
     ).then(
-      data => this.setState({ plDetail: data })
+      data => {
+        console.log(data.songlist);
+        this.setState({ plDetail: data });
+      }
     ).catch(
       reason => console.log(reason)
     );
   }
 
-  handleClick(func) {
+  handleClickPlayallOrAddall(func) {
     func(this.state.plDetail.songlist);
   }
 
@@ -101,10 +104,16 @@ class PlayListDetail extends React.Component {
                 </div>
                 {/* operation */}
                 <div className="pld-info-operation">
-                  <span className="pld-info-operation-btn pld-info-operation-playall">
+                  <span 
+                    className="pld-info-operation-btn pld-info-operation-playall"
+                    onClick={() => {this.handleClickPlayallOrAddall(playAll)}}
+                  >
                     播放全部
                   </span>
-                  <span className="pld-info-operation-btn pld-info-operation-addall">
+                  <span 
+                    className="pld-info-operation-btn pld-info-operation-addall"
+                    onClick={() => {this.handleClickPlayallOrAddall(addAll)}}
+                  >
                     +
                   </span>
                 </div>

@@ -1,13 +1,13 @@
-$font-size: 12px;
-$padding-size: 24px;
-$line-height-size: 20px;
+$font-size: 14px;
+$padding-size: 20px;
+$line-height-size: 22px;
 
 
 .pl-wrap {
   font-size: 0;
   min-width: 762 + $padding-size;
   max-width: 1040 + $padding-size;
-  margin: 20px auto;
+  margin: ($font-size * 3) auto;
 }
 .pl-content {
   margin-right: -$padding-size;
@@ -17,7 +17,7 @@ $line-height-size: 20px;
   box-sizing: border-box; // 方案一
   width: 20%;
   padding-right: $padding-size;
-  padding-bottom: $font-size * 3;
+  padding-bottom: $line-height-size * 2;
 
   font-size: $font-size;
   line-height: $line-height-size;
@@ -29,6 +29,12 @@ $line-height-size: 20px;
     img {
       display: block;
       width: 100%; // 方案一
+      // border-radius: 4px;
+      // transition: box-shadow 0.3s ease-out;
+
+      // &:hover {
+      //   box-shadow: 0 6px 16px rgba(0,0,0,0.18);
+      // }
     }
   }
 

@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 
 import PlayerContext from '../../../context/PlayerContext';
 import './SongBrief.scss';
-import cover from './images/cover-eg.jpg'
 
 class SongBrief extends React.Component {
   
@@ -21,36 +20,43 @@ class SongBrief extends React.Component {
     return (
       <PlayerContext.Consumer>
         {({ playerState }) => {
-          const currentSong = playerState.currentSong;
+          const { currentSong } = playerState;
+
+          if (this.isEmptyObj(currentSong)) {
+            return;
+          }
+
           const songLocation = {
             pathname: "/song",
-            search: `?id=${currentSong.id}`
+            search: `?id=${currentSong.id}`,
           };
-          const songBriefContainCls = `mty-song-brief-container ${
-            this.isEmptyObj(currentSong) ? 'dis-hide' : ''
-          }`;
+          const coverUrl = `${currentSong.album.picUrl}?param=44y44`;
+          const coverImg = <img src={coverUrl} alt="cover"/>;
           
           return (
-            <div className={songBriefContainCls}>
+            <div className="mty-song-brief-container">
               <div className="mty-song-brief">
-            		{/* <!--cover--> */}
+            		{/* cover */}
             		<div className="mty-song-brief-cover">
             			<Link to={songLocation}>
-                    {/* TODO 之后currentSong会包含cover url */}
-            				<img src={cover} alt="cover"/>
+            				{coverImg}
                   </Link>
             		</div>
-            		{/* <!--info--> */}
+            		{/* info */}
             		<div className="mty-song-brief-info">
             			<div className="mty-song-brief-info-name">
-            				<Link to={songLocation}>{currentSong.name}</Link>
+            				<Link to={songLocation}>
+                      {currentSong.name}
+                    </Link>
             			</div>
             			<div className="mty-song-brief-info-artists">
                     {/* TODO 连接到歌手详情页 */}
-            				<Link to={songLocation}>{currentSong.artists}</Link>
+            				<Link to={songLocation}>
+                      {currentSong.artists.map(val => val.name).join('/')}
+                    </Link>
             			</div>
             		</div>
-            		{/* <!--operation--> */}
+            		{/* operation */}
             		<div className="mty-song-brief-operation">
                   {/* TODO 添加真实icon图片以及业务逻辑 */}
             			<i>like</i>

@@ -1,5 +1,6 @@
 $active-color: #cc3333;
 $height-size: 42px;
+$font-size: 14px;
 
 .mty-tabs {
   display: flex;
@@ -32,7 +33,7 @@ $height-size: 42px;
     height: $height-size;
     line-height: $height-size;
     padding: 0 2px;
-    font-size: 14px;
+    font-size: $font-size;
     // font-weight: 600;
     color: #333333;
     text-decoration: none;
