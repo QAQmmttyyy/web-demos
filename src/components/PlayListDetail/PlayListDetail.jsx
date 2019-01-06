@@ -1,8 +1,9 @@
 import React from 'react';
 import { Link } from "react-router-dom";
+import l_lang from 'lodash/lang';
 
 import PlayerContext from '../../context/PlayerContext';
-import SongTable from './SongTable/SongTable.jsx';
+import SongTable from '../SongTable/SongTable.jsx';
 
 import './PlaylistDetail.scss';
 
@@ -35,8 +36,9 @@ class PlayListDetail extends React.Component {
     );
   }
 
-  handleClickPlayallOrAddall(func) {
-    func(this.state.plDetail.songlist);
+  handleClickPlayallOrAddall(funcPlayallOrAddall) {
+    const songlist = l_lang.cloneDeep(this.state.plDetail.songlist);
+    funcPlayallOrAddall(songlist);
   }
 
   render() {
@@ -63,9 +65,8 @@ class PlayListDetail extends React.Component {
       const authorLinkParts = author.link.split('?');
 
       return (
-        
         <PlayerContext.Consumer>
-          {({ playerState, playAll, addAll }) => (
+          {({ playAll, addAll }) => (
             <React.Fragment>
               <div className="pld-info">
                 {/* cover */}

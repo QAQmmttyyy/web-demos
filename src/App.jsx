@@ -29,6 +29,8 @@ class App extends React.Component {
     this.pause = this.pause.bind(this);
     this.playAll = this.playAll.bind(this);
     this.addAll = this.addAll.bind(this);
+    this.playSong = this.playSong.bind(this);
+    this.addSongToNext = this.addSongToNext.bind(this);
     // TODO:
     // menuInfo 登录与未登录不同。
     // 登陆后更改，然后设置 isLogin 触发更新。
@@ -91,11 +93,11 @@ class App extends React.Component {
       const matchedSongIdx = l_array.findIndex(playingList, ['id', song.id]);
   
       // 已有这首歌
-      if (matchedSongIdx) {
+      if (matchedSongIdx !== -1) {
         
         if (matchedSongIdx === curSongIndex) {// 且为正在播放的歌
           // 直接播放这首歌
-          this.play(matchedSongIdx); 
+          this.play(matchedSongIdx);
 
         } else if (matchedSongIdx < curSongIndex) {// 在正在播放的歌之前
           // 添加到正播放的歌的后面
@@ -106,7 +108,8 @@ class App extends React.Component {
           this.setState({
             playingList: playingList,
             curSongIndex: curSongIndex - 1,
-          }, () => this.play(indexToInsert));
+          }, () => this.play(indexToInsert - 1));
+
         } else {// 在正在播放的歌之后
           // 从原位置移除
           playingList.splice(matchedSongIdx, 1);
@@ -119,6 +122,7 @@ class App extends React.Component {
       } else {// 没有这首歌
         // 添加到正播放的歌的后面
         playingList.splice(indexToInsert, 0, song);
+        console.log(playingList);
         // 更新 ui
         this.setState({ playingList: playingList }, () => this.play(indexToInsert));
       }
@@ -139,7 +143,7 @@ class App extends React.Component {
       const matchedSongIdx = l_array.findIndex(playingList, ['id', song.id]);
   
       // 已有这首歌
-      if (matchedSongIdx) {
+      if (matchedSongIdx !== -1) {
         
         if (matchedSongIdx === curSongIndex) {// 且为正在播放的歌
           // 直接播放这首歌
@@ -155,6 +159,7 @@ class App extends React.Component {
             playingList: playingList,
             curSongIndex: curSongIndex - 1,
           });
+
         } else {// 在正在播放的歌之后
           // 从原位置移除
           playingList.splice(matchedSongIdx, 1);
@@ -182,7 +187,10 @@ class App extends React.Component {
   }
 
   playAll(songlist) {
-    this.setState({ playingList: songlist }, () => this.play(0));
+    this.setState({
+      playingList: songlist,
+      curSongIndex: -1,
+    }, () => this.play(0));
   }
 
   addAll(songlist) {
@@ -216,7 +224,9 @@ class App extends React.Component {
             play: this.play,
             pause: this.pause,
             playAll: this.playAll,
-            addAll: this.addAll
+            addAll: this.addAll,
+            playSong: this.playSong,
+            addSongToNext: this.addSongToNext,
           }}
         >
           {/* app ui */}

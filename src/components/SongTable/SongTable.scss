@@ -1,0 +1,204 @@
+// 22 14
+$font-size: 14px;
+$btn-size: $font-size;
+$line-height-size: 22px;
+
+.st-table {
+  // width: 100%;
+  font-size: $font-size;
+  text-align: left;
+  border-collapse: collapse;
+  cursor: default;
+
+  .st-thead .st-th {
+    height: $line-height-size * 2;
+    padding: 0;
+    font-weight: normal;
+    color: #b5b5b5;
+
+    &:nth-child(1) {
+      text-align: right;
+    }
+  }
+
+  .st-tbody {
+    .st-td {
+      height: $line-height-size * 3;
+      padding: 0;
+    }
+    .st-tr:hover {
+      background-color: #fff;
+
+      .st-td-music .st-td-music-cnt-wrap .st-td-music-operation {
+        display: block;
+      }
+    }
+  }
+
+  .st-btn {
+    display: inline-block;
+    width: $btn-size;
+    height: $btn-size;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: center center;
+    cursor: pointer;
+    font-size: 0;
+  }
+
+  .st-td {
+    &-index {
+      width: $font-size * 3;
+      min-width: $font-size * 3;
+      text-align: right;
+      color: #b5b5b5;
+      font-weight: 500;
+
+      .wave {
+        display: inline-block;
+        width: 18px;
+        height: 16px;
+        margin-right: -3px;
+        font-size: 0;
+        transform: rotate(180deg);
+      }
+
+      .wave-part {
+        float: left;
+        width: 3px;
+        margin-right: 3px;
+        vertical-align: bottom;
+        background-color: rgb(255, 212, 38);
+        
+        &:nth-child(1) {
+          animation: wave 0.35s ease-in-out 0s infinite alternate ;
+        }
+        &:nth-child(2) {
+          animation: wave 0.5s ease-in-out 0s infinite alternate ;
+        }
+        &:nth-child(3) {
+          animation: wave 0.65s ease-in-out 0s infinite alternate ;
+        }
+      }
+
+      .stop {
+        .wave-part{
+          // animation: none;
+          animation-play-state: paused;
+
+          &:nth-child(1) {
+            height: 12px;
+          }
+          &:nth-child(2) {
+            height: 16px;
+          }
+          &:nth-child(3) {
+            height: 8px;
+          }
+        }
+      }
+
+    }
+
+    &-like {
+      width: $font-size * 5;
+      min-width: $font-size * 5;
+      text-align: center;
+
+      .st-btn {
+        &-like,
+        &-liked {
+          vertical-align: top;
+          margin-top: 1px;
+        }
+        &-like {
+          background-image: url(./images/like.png);
+        }
+        &-liked {
+          background-image: url(./images/liked.png);
+        }
+
+      }
+    }
+
+    &-music {
+      &-cnt-wrap {
+        display: flex;
+        width: $font-size * 25;
+        margin-right: $line-height-size;
+
+      }
+      &-info {
+        flex: 1 1 auto;
+        line-height: $line-height-size;
+        overflow: hidden;
+
+        &-name a {
+          font-weight: 600;
+          color: #000000;
+        }
+        &-artists a {
+          font-size: $font-size - 2;
+          color: #666666;
+        }
+      }
+      &-operation {
+        display: none;
+        flex: 0 0 auto;
+        margin-left: $line-height-size;
+
+        .st-btn {
+          &-play,
+          &-pause,
+          &-add {
+            vertical-align: top;
+            margin-top: ($line-height-size * 2 - $btn-size) / 2;
+            background-size: $btn-size - 2;
+            margin-right: $font-size;
+          }
+          &-play {
+            background-image: url(./images/play.png);
+          }
+          &-pause {
+            background-image: url(./images/songtable-pause.png);
+          }
+          &-add {
+            background-image: url(./images/add.png);
+          }
+        }
+      }
+    }
+
+    &-album {
+      display: flex;
+      align-items: center;
+      width: $font-size * 15;
+      padding-right: $line-height-size;
+      
+      a {
+        display: block;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        color: #666666;
+      }
+    }
+
+    &-duration {
+      width: $font-size * 5;
+      color: #666666;
+    }
+  }
+}
+
+@keyframes wave {
+  from {
+    height: 3px;
+    // height: 16px;
+  }
+
+  to {
+    height: 16px;
+    // height: 3px;
+  }
+}

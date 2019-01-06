@@ -205,10 +205,11 @@ $volume-btn-bg-size: 14px;
 
 
   .playlist-panel {
-    width: 300px;
-    height: 200px;
+    height: 500px;
+    background-color: #fff;
     border: 1px solid #000;
     position: absolute;
+    
     bottom: 52px;
     right: 0;
     overflow: auto;

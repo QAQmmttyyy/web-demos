@@ -1,6 +1,8 @@
 import React from 'react';
 
 import PlayerContext from '../../context/PlayerContext';
+import SongTable from '../SongTable/SongTable.jsx';
+
 import './Player.scss';
 
 class Player extends React.Component {
@@ -416,7 +418,7 @@ class Player extends React.Component {
               <audio 
                 ref={this.audioRef}
                 src={
-                  currentSong.link ? `${this.songUrlApi}${currentSong.id}` : ''
+                  currentSong && currentSong.link ? `${this.songUrlApi}${currentSong.id}` : ''
                 }
                 onVolumeChange={() => this.handleVolumeChange()}
                 onDurationChange={() => this.handleDurationChange()}
@@ -531,7 +533,8 @@ class Player extends React.Component {
               <div className={
                 'playlist-panel' + (this.state.isOpen ? '' : ' dis-hide')
               }>
-                <ul>
+                <SongTable songlist={playingList}/>
+                {/* <ul>
                   {playingList.map(song => (
                     <li 
                       key={song.id}
@@ -540,7 +543,7 @@ class Player extends React.Component {
                       {song.name}-{song.artists.map(val => val.name).join('/')}
                     </li>
                   ))}
-                </ul>
+                </ul> */}
               </div>
             </div>
           );
