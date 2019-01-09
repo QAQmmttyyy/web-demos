@@ -1,65 +1,80 @@
 %cover-dimension {
-  width: 44px;
-  height: 44px;
+  width: 52px;
+  height: 52px;
 }
 
 .mty-song-brief {
-  &-container {
-    flex: none;
-    width: 100%;
-    height: 56px;
-  }
+  // &-container {
+  //   flex: none;
+  //   width: 100%;
+  //   height: 56px;
+  // }
 
-	display: flex;
-	height: 56px;
-	border-top: 1px solid #e1e1e1;
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  width: 288px;
+	height: 66px;
   font-size: 12px;
   
   &-cover {
     flex: none;
-    margin: 6px 8px 6px 6px;
+    margin-left: 14px;
+    margin-right: 14px;
+
+    &-placeholder {
+      display: block;
+      width: 44px;
+      height: 44px;
+    }
     
     a {
       position: relative;
       display: block;
       @extend %cover-dimension;
       text-decoration: none;
-      
-      img { @extend %cover-dimension; }
+      border-radius: 3px;
+
+      img { 
+        // display: block;
+        border-radius: 4px;
+        @extend %cover-dimension;
+      }
     }
 
+    
     a:hover::before {
       content: '';
       position: absolute;
       @extend %cover-dimension;
       background-image: url(./images/cover-arrow-44x44.png);
+      background-position: center center;
     }
   }
 
   &-info {
     flex: auto;
-    margin-top: 6px;
     overflow: hidden;
     
     &-name, &-artists {
-      height: 12px;
-      line-height: 12px;
+      // height: 12px;
+      line-height: 20px;
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
 
-      a { text-decoration: none; }
+      a { 
+        text-decoration: none;
+      }
     }
     
     &-name {
-      margin: 6px 0 8px 0;
-
-      a { color: #333333; }
+      a { color: #000000; }
     }
     
     &-artists {
-      a { color: #666666; }
-      a:hover { color: #333333; }
+      a { color: #797979; }
+      // a:hover { color: #000000; }
     }
   }
 }

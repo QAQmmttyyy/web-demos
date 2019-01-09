@@ -1,7 +1,8 @@
 import React from 'react';
 
 import Menu from './menu/Menu.jsx';
-import SongBrief from './SongBrief/SongBrief.jsx';
+// import SongBrief from './SongBrief/SongBrief.jsx';
+
 import './Sider.scss';
 
 class Sider extends React.Component {
@@ -11,7 +12,7 @@ class Sider extends React.Component {
     return (
       <div className="mty-sider">
         <Menu info={menuInfo}/>
-        <SongBrief />
+        {/* <SongBrief /> */}
       </div>
     );
   }

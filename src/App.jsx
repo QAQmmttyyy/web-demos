@@ -236,7 +236,7 @@ class App extends React.Component {
                 top: 0,
                 width: '100%',
                 height: 50,
-                // backgroundColor: '#cc3333',
+                backgroundColor: 'rgb(255, 212, 38)',
               }}
             >
             </header>
@@ -275,7 +275,7 @@ class App extends React.Component {
                 position: 'fixed',
                 bottom: 0,
                 width: '100%',
-                height: 50,
+                // height: 50,
                 // borderTop: "1px solid #e1e1e1",
                 backgroundColor: "#ffffff",
               }}

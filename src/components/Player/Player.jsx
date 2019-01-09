@@ -1,6 +1,7 @@
 import React from 'react';
 
 import PlayerContext from '../../context/PlayerContext';
+import SongBrief from '../SongBrief/SongBrief.jsx';
 import SongTable from '../SongTable/SongTable.jsx';
 
 import './Player.scss';
@@ -429,6 +430,8 @@ class Player extends React.Component {
               >
               </audio>
 
+              <SongBrief />
+
               {/* prev play/pause next */}
               <span 
                 className="btn prev"
@@ -533,17 +536,13 @@ class Player extends React.Component {
               <div className={
                 'playlist-panel' + (this.state.isOpen ? '' : ' dis-hide')
               }>
-                <SongTable songlist={playingList}/>
-                {/* <ul>
-                  {playingList.map(song => (
-                    <li 
-                      key={song.id}
-                      className={currentSong.id === song.id ? 'cur-play' : ''}
-                    >
-                      {song.name}-{song.artists.map(val => val.name).join('/')}
-                    </li>
-                  ))}
-                </ul> */}
+                <SongTable 
+                  songlist={playingList}
+                  hasLike={false}
+                  hasAlbum={false}
+                  hasSource={true}
+                  inPlaylistPanel={true}
+                />
               </div>
             </div>
           );

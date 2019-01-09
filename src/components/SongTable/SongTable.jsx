@@ -8,192 +8,269 @@ import './SongTable.scss';
 
 class SongTable extends React.Component {
 
-  handleClickPlay(funcPlaySong, songIndex) {
-    funcPlaySong(_.cloneDeep(this.props.songlist[songIndex]));
+  handlePlayPauseSong(funcPlayPauseSong, songIndex) {
+    funcPlayPauseSong(_.cloneDeep(this.props.songlist[songIndex]));
   }
-
-  handleClickAdd(funcAddSongToNext, songIndex) {
+  
+  handleAddSong(funcAddSongToNext, songIndex) {
     funcAddSongToNext(_.cloneDeep(this.props.songlist[songIndex]));
   }
 
-  render() {
-    const { songlist } = this.props;
+  handlePlayPause(funcPlayPause, songIndex) {
+    funcPlayPause(songIndex);
+  }
 
-    const theadField = ['#', '', '音乐', '专辑', '时长'];
+  render() {
+    const {
+      songlist,
+      hasLike = true,
+      hasAlbum = true,
+      hasSource = false,
+      inPlaylistPanel = false,
+    } = this.props;
+
+    // allField = ['#', ' ', '音乐', '歌手', '专辑', '时长', '来源'];
 
     return (
       <PlayerContext.Consumer>
-        {({ playerState, pause, playSong, addSongToNext  }) => {
+        {({ playerState, play, pause, playSong, addSongToNext  }) => {
 
           const {
             currentSong,
             isPause,
           } = playerState;
 
-          const matchedSongIdx = _.findIndex(songlist, ['id', currentSong.id]);
+          const theadTr = (
+            <tr className="st-tr">
+              <th className="st-th st-th-index">
+                #
+              </th>
+              {hasLike ? (
+                <th className="st-th st-th-like">
+                  喜欢
+                </th>
+              ) : null}
+              <th className="st-th">
+                音乐
+              </th>
+              <th className="st-th">
+                歌手
+              </th>
+              {hasAlbum ? (
+                <th className="st-th st-th-album">
+                  专辑
+                </th>
+              ) : null}
+              {hasSource ? (
+                <th className="st-th st-th-source">
+                  来源
+                </th>
+              ) : null}
+              <th className="st-th">
+                时长
+              </th>
+            </tr>
+          );
 
-          const thArr = theadField.map((field, index) => (
-            <th 
-              key={index}
-              className="st-th"
-            >
-              {field}
-            </th>
-          ));
+          
+          {/* tbody tr td */}
+          const 
+            matchedSongIdx = _.findIndex(songlist, ['id', currentSong.id]),
+            trArr = songlist.map((song, index) => {
 
-          const trArr = songlist.map((song, index) => {
+              const {
+                id,
+                name,
+                duration,
+                artists,
+                album,
+                source,
+              } = song;
 
-            const {
-              id,
-              link,
-              name,
-              // alias,
-              duration,
-              artists,
-              album,
-              // source,
-              // cmtNum,
-            } = song;
+              let artistsTitle = '';
+              const 
+                lastArtistIdx = artists.length - 1,
+                artistArr = artists.map((artist, index) => {
 
-            const 
-              songLinkPart = link.split('?'),
-              songLinkLocation = {
-                pathname: songLinkPart[0],
-                search: `?${songLinkPart[1]}`,
-              };
+                  const
+                    linkText = (
+                      index !== lastArtistIdx
+                    ) ? `${artist.name} / `
+                      : `${artist.name}`;
+                  
+                  artistsTitle += linkText;
 
-            const 
-              lastArtistIdx = artists.length - 1,
-              artistArr = artists.map((artist, index, arr) => {
+                  let 
+                    artistLinkPart = '',
+                    artistlinkLocation = {};
 
-                const
-                  linkText = (
-                    index !== lastArtistIdx
-                  ) ? `${artist.name} / `
-                    : `${artist.name}`;
+                  if (artist.link) {
+                    artistLinkPart = artist.link.split('?');
+                    artistlinkLocation = {
+                      pathname: artistLinkPart[0],
+                      search: `?${artistLinkPart[1]}`,
+                    };
+                    return (
+                      <Link 
+                        key={index}
+                        to={artistlinkLocation}
+                      >
+                        {linkText}
+                      </Link>
+                    );            
+                  }
 
-                let 
-                  artistLinkPart = '',
-                  artistlinkLocation = {};
-
-                if (artist.link) {
-                  artistLinkPart = artist.link.split('?');
-                  artistlinkLocation = {
-                    pathname: artistLinkPart[0],
-                    search: `?${artistLinkPart[1]}`,
-                  };
                   return (
-                    <Link 
-                      key={index}
-                      to={artistlinkLocation}
-                    >
+                    <a key={index}>
                       {linkText}
-                    </Link>
-                  );            
-                }
+                    </a>
+                  );
+                });
 
-                return (
-                  <a key={index}>
-                    {linkText}
-                  </a>
+              const 
+                albumLinkPart = album.link.split('?'),
+                albumLinkLocation = {
+                  pathname: albumLinkPart[0],
+                  search: `?${albumLinkPart[1]}`,
+                };
+
+              let 
+                sttdindexChildren = null,
+                operationPlayPauseCls = '',
+                operationAddDeleteCls = '',
+                funcPlayPauseParam = null;
+
+              if (matchedSongIdx === index) {
+
+                sttdindexChildren = (
+                  <span className={`wave ${isPause ? 'stop' : ''}`}>
+                    <i className="wave-part"></i>
+                    <i className="wave-part"></i>
+                    <i className="wave-part"></i>
+                  </span>
                 );
-              });
+                operationPlayPauseCls = `st-btn ${isPause ? 'st-btn-play' : 'st-btn-pause'}`;
+                funcPlayPauseParam = isPause 
+                  ? inPlaylistPanel 
+                    ? play 
+                    : playSong 
+                  : pause;
+                
+              } else {
+                sttdindexChildren = index + 1;
+                operationPlayPauseCls = 'st-btn st-btn-play';
+                funcPlayPauseParam = inPlaylistPanel ? play : playSong;
+              }
 
-            const 
-              albumLinkPart = album.link.split('?'),
-              albumLinkLocation = {
-                pathname: albumLinkPart[0],
-                search: `?${albumLinkPart[1]}`,
-              };
+              const 
+                sourceLinkPart = source.link.split('?'),
+                sourceLinkLocation = {
+                  pathname: sourceLinkPart[0],
+                  search: `?${sourceLinkPart[1]}`,
+                };
 
-            let 
-              sttdindexChildren = null,
-              operationPlayPauseCls = '',
-              operationAddDeleteCls = '',
-              funcPlayPauseParam = null;
-
-            if (matchedSongIdx === index) {
-
-              sttdindexChildren = (
-                <span className={`wave ${isPause ? 'stop' : ''}`}>
-                  <i className="wave-part"></i>
-                  <i className="wave-part"></i>
-                  <i className="wave-part"></i>
-                </span>
-              );
-              operationPlayPauseCls = `st-btn ${isPause ? 'st-btn-play' : 'st-btn-pause'}`;
-              funcPlayPauseParam = isPause ? playSong : pause;
-              
-            } else {
-              sttdindexChildren = index + 1;
-              operationPlayPauseCls = 'st-btn st-btn-play';
-              funcPlayPauseParam = playSong;
-            }
-
-            return (
-              <tr key={id} className="st-tr">
-                {/* # */}
-                <td className="st-td st-td-index">
-                  {sttdindexChildren}
-                </td>
-                {/* 收藏 */}
-                <td className="st-td st-td-like">
-                  <span className="st-btn st-btn-like">like</span>
-                </td>
-                {/* 歌名|歌手 */}
-                <td className="st-td st-td-music">
-                  <div className="st-td-music-cnt-wrap">
-                    <div className="st-td-music-info">
-                      <h4 className="st-td-music-info-name f-thide">
-                        <Link 
-                          to={songLinkLocation}
+              return (
+                <tr key={id} className="st-tr">
+                  <td className="st-td st-td-index">
+                    {sttdindexChildren}
+                  </td>
+                  {/* 收藏 */}
+                  {(hasLike) ? (
+                    <td className="st-td st-td-like">
+                      <span className="st-btn st-btn-like">like</span>
+                    </td>
+                  ) : null}
+                  {/* 音乐 */}
+                  <td className="st-td">
+                    <div className="st-td-music">
+                      <div className="st-td-music-info">
+                        <h4 
+                          className="st-td-music-info-name f-thide"
                           title={name}
                         >
                           {name}
+                        </h4>
+                        {/* <h5 className="st-td-music-info-artists f-thide">
+                          {artistArr}
+                        </h5> */}
+                      </div>
+                      {inPlaylistPanel ? (
+                        <div className="st-td-music-operation">
+                          <span 
+                            className={operationPlayPauseCls}
+                            onClick={() => {this.handlePlayPause(funcPlayPauseParam, index)}}
+                          >
+                            play|pause
+                          </span>
+                        </div>
+                      ) : (
+                        <div className="st-td-music-operation">
+                          <span 
+                            className={operationPlayPauseCls}
+                            onClick={() => {this.handlePlayPauseSong(funcPlayPauseParam, index)}}
+                          >
+                            play|pause
+                          </span>
+                          <span 
+                            className="st-btn st-btn-add"
+                            onClick={() => this.handleAddSong(addSongToNext, index)}
+                          >
+                            add|delete
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  </td>
+                  <td className="st-td">
+                    <div 
+                      className="st-td-artists f-thide"
+                      title={artistsTitle}
+                    >
+                      {artistArr}
+                    </div>
+                  </td>
+                  {/* 专辑 */}
+                  {hasAlbum ? (
+                    <td className="st-td">
+                      <div className="st-td-album">
+                        <Link 
+                          to={albumLinkLocation}
+                          title={album.name}
+                        >
+                          {album.name}
                         </Link>
-                      </h4>
-                      <h5 className="st-td-music-info-artists f-thide">
-                        {artistArr}
-                      </h5>
-                    </div>
-                    <div className="st-td-music-operation">
-                      <span 
-                        className={operationPlayPauseCls}
-                        onClick={() => {this.handleClickPlay(funcPlayPauseParam, index)}}
-                      >
-                        play|pause
-                      </span>
-                      <span 
-                        className="st-btn st-btn-add"
-                        onClick={() => this.handleClickAdd(addSongToNext, index)}
-                      >
-                        add|delete
-                      </span>
-                    </div>
-                  </div>
-                </td>
-                {/* 专辑 */}
-                <td className="st-td st-td-album">
-                  <Link 
-                    to={albumLinkLocation}
-                    title={album.name}
-                  >
-                    {album.name}
-                  </Link>
-                </td>
-                {/* 时长 */}
-                <td className="st-td st-td-duration">
-                  {duration}
-                </td>
-              </tr>
-            );
-          });
+                      </div>
+                    </td>
+                  ) : null}
+                  {/* 来源 */}
+                  {(hasSource) ? (
+                    <td className="st-td">
+                      <div className="st-td-source">
+                        <Link 
+                          to={sourceLinkLocation}
+                          title={source.title}
+                          className="st-btn st-btn-source"
+                        >
+                          来源
+                        </Link>
+                      </div>
+                    </td>
+                  ) : null}
+                  {/* 时长 */}
+                  <td className="st-td st-td-duration">
+                    {/* <div className=""> */}
+                    {duration}
+                    {/* </div> */}
+                  </td>
+                </tr>
+              );
+            });
 
           {/* Consumer return */}
           return (
             <table className="st-table">
               <thead className="st-thead">
-                <tr>{thArr}</tr>
+                {theadTr}
               </thead>
               <tbody className="st-tbody">
                 {trArr}
