@@ -2,24 +2,31 @@
 $font-size: 14px;
 $btn-size: $font-size;
 $line-height-size: 22px;
+// color
+$font-color-1: #000000; // name
+$font-color-2: #999; // alias artists album duration8c8c8c
+$font-color-3: #b5b5b5; // index thb5b5b5
 
 .st-table {
   // width: 100%;
   // width: 980px;
   // min-width: 980px;
-  margin: 0 30px;
-  font-size: $font-size;
-  text-align: left;
+  
+  margin: 0 auto 22px;
   border-collapse: collapse;
+  font-size: $font-size;
+  font-variant-numeric: tabular-nums;
+  text-align: left;
   cursor: default;
 
   .st-thead {
 
     .st-th {
-      height: $line-height-size * 2;
-      padding-left: 10px;
+      // height: $line-height-size * 2;
+      // padding-left: 10px;
+      padding: 7px 0 7px 10px;
       font-weight: normal;
-      color: #b5b5b5;
+      color: $font-color-3;
   
       &-index {
         text-align: right;
@@ -35,14 +42,20 @@ $line-height-size: 22px;
   .st-tbody {
 
     .st-tr:nth-child(even) {
-      background-color: #f5f5f5;
+      background-color: #fbfbfb;
     }
-    
+    .st-tr {
+      transition: background-color 50ms;
+    }
     .st-tr:hover {
+      background-color: #f5f5f5;
       // .st-td-music-cnt-wrap
       .st-td-music .st-td-music-operation {
         display: flex;
       }
+    }
+    .st-tr.is-playing {
+      background-color: #f1f1f1;
     }
 
     .st-td {
@@ -52,9 +65,10 @@ $line-height-size: 22px;
         // width: $font-size * 2;
         // min-width: $font-size * 2;
         padding: 7px 10px;
+        // border-bottom-width: 0;
         text-align: right;
-        color: #b5b5b5;
-        font-weight: 500;
+        color: $font-color-3;
+        // font-weight: 500;
 
         .wave {
           display: inline-block;
@@ -102,16 +116,17 @@ $line-height-size: 22px;
       }
 
       &-like {
-        width: $font-size * 5 - 20;
-        min-width: $font-size * 5 - 20;
+        width: $font-size * 2;
+        min-width: $font-size * 2;
         padding: 7px 0;
+        // border-bottom-width: 0;
         text-align: center;
 
         .st-btn {
           &-like,
           &-liked {
             vertical-align: top;
-            margin-top: 1px;
+            margin-top: 3px;
           }
           &-like {
             background-image: url(./images/like.png);
@@ -125,7 +140,7 @@ $line-height-size: 22px;
 
       &-music {
         display: flex;
-        width: $font-size * 25;
+        width: $font-size * 21;
         margin-right: $line-height-size;
         // position: relative;
 
@@ -137,7 +152,11 @@ $line-height-size: 22px;
           line-height: $line-height-size;
 
           &-name {
-            color: #000000;
+            color: $font-color-1;
+
+            .alias {
+              color: $font-color-2;
+            }
           }
           // &-artists a {
           //   font-size: $font-size - 2;
@@ -186,7 +205,7 @@ $line-height-size: 22px;
         // text-overflow: ellipsis;
 
         a {
-          color: #797979;
+          color: $font-color-2;
         }
       }
 
@@ -204,7 +223,7 @@ $line-height-size: 22px;
           // overflow: hidden;
           // white-space: nowrap;
           // text-overflow: ellipsis;
-          color: #797979;
+          color: $font-color-2;
         }
       }
 
@@ -223,7 +242,7 @@ $line-height-size: 22px;
       &-duration {
         // width: $font-size * 5;
         padding: 7px 10px;
-        color: #797979;
+        color: $font-color-3;
       }
     }
   }
@@ -237,6 +256,7 @@ $line-height-size: 22px;
     background-position: center center;
     cursor: pointer;
     font-size: 0;
+    transition: background-image 0.2s;
   }
 }
 

@@ -4,8 +4,10 @@ import l_array from 'lodash/array';
 
 import PlayerContext from './context/PlayerContext';
 
-import Sider from './components/Sider/Sider.jsx';
+import Header from './components/Header/Header.jsx';
 import Discover from './components/Discover/Discover.jsx';
+import Playlists from './components/Playlists/Playlists.jsx';
+
 import PlaylistDetail from './components/PlaylistDetail/PlaylistDetail.jsx';
 import DjRadioDetail from './components/DjRadioDetail/DjRadioDetail.jsx';
 import VideoDetail from './components/VideoDetail/VideoDetail.jsx';
@@ -231,33 +233,21 @@ class App extends React.Component {
         >
           {/* app ui */}
           {/* <div style={{ position: "relative" }}> */}
-            <header style={{ 
-                position: 'fixed',
-                top: 0,
-                width: '100%',
-                height: 50,
-                backgroundColor: 'rgb(255, 212, 38)',
-              }}
-            >
-            </header>
-            <div style={{ 
-                boxSizing: 'border-box',
-                height: "100%",
-                padding: '50px 0 51px 208px',
-              }}
-            >
-              {/* sideBar */}
-              <Sider menuInfo={this.menuInfo}/>
-
+            <Header />
+            <div>
               <div style={{
-                height: '100%',
-                overflowY: 'auto',
-                overflowX: 'hidden',
+                width: 900,
+                padding: '40px 40px 10px',
+                margin: '10px auto 80px',
+                backgroundColor: 'white',
+                borderRadius: '2px',
+                boxShadow: '0 1px 3px rgba(26, 26, 26, 0.1)',
               }}>
                 <Switch>
                   {/* 常规一级路由 */}
                   <Redirect exact from="/" to="/discover"/>
                   <Route path="/discover" component={Discover}/>
+                  <Route path="/playlists" component={Playlists}/>
 
                   {/* 提升层级：歌单/电台详情页，会有query params，与一级显示区域相同 */}
                   <Route path="/playlist" component={PlaylistDetail}/>
@@ -275,8 +265,6 @@ class App extends React.Component {
                 position: 'fixed',
                 bottom: 0,
                 width: '100%',
-                // height: 50,
-                // borderTop: "1px solid #e1e1e1",
                 backgroundColor: "#ffffff",
               }}
             >

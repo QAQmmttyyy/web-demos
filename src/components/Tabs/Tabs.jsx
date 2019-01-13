@@ -2,7 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 
 import './Tabs.scss';
-// TODO 支持定制height
+
 class Tabs extends React.Component {
   render() {
     const { info, justify } = this.props;

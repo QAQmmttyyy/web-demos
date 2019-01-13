@@ -87,6 +87,11 @@ class SongTable extends React.Component {
                 source,
               } = song;
 
+              const 
+                matched = name.match(/(.*)( - \(.*\))/),
+                songName = matched ? matched[1] : name,
+                songAlias = matched ? matched[2] : null;
+
               let artistsTitle = '';
               const 
                 lastArtistIdx = artists.length - 1,
@@ -135,13 +140,14 @@ class SongTable extends React.Component {
                 };
 
               let 
+                trCls = '',
                 sttdindexChildren = null,
                 operationPlayPauseCls = '',
                 operationAddDeleteCls = '',
                 funcPlayPauseParam = null;
 
               if (matchedSongIdx === index) {
-
+                trCls = 'st-tr is-playing';
                 sttdindexChildren = (
                   <span className={`wave ${isPause ? 'stop' : ''}`}>
                     <i className="wave-part"></i>
@@ -157,6 +163,7 @@ class SongTable extends React.Component {
                   : pause;
                 
               } else {
+                trCls = 'st-tr';
                 sttdindexChildren = index + 1;
                 operationPlayPauseCls = 'st-btn st-btn-play';
                 funcPlayPauseParam = inPlaylistPanel ? play : playSong;
@@ -170,7 +177,7 @@ class SongTable extends React.Component {
                 };
 
               return (
-                <tr key={id} className="st-tr">
+                <tr key={id} className={trCls}>
                   <td className="st-td st-td-index">
                     {sttdindexChildren}
                   </td>
@@ -188,7 +195,10 @@ class SongTable extends React.Component {
                           className="st-td-music-info-name f-thide"
                           title={name}
                         >
-                          {name}
+                          {songName}
+                          {songAlias ? (
+                            <span className="alias">{songAlias}</span>
+                          ) : null}
                         </h4>
                         {/* <h5 className="st-td-music-info-artists f-thide">
                           {artistArr}

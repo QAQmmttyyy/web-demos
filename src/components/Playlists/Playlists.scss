@@ -1,5 +1,5 @@
 $font-size: 14px;
-$padding-size: 20px;
+$padding-size: 32px;
 $line-height-size: 22px;
 
 
@@ -7,9 +7,14 @@ $line-height-size: 22px;
   font-size: 0;
   min-width: 762 + $padding-size;
   max-width: 1040 + $padding-size;
-  margin: ($font-size * 3) auto;
+  // margin: ($font-size * 3) auto;
+}
+.pl-cat {
+  font-size: 24px;
+  line-height: 32px;
 }
 .pl-content {
+  margin-top: 30px;
   margin-right: -$padding-size;
 }
 .pl-item {
@@ -29,6 +34,7 @@ $line-height-size: 22px;
     img {
       display: block;
       width: 100%; // 方案一
+      box-shadow: 0 0 2px rgba(26, 26, 26, 0.1);
       // border-radius: 4px;
       // transition: box-shadow 0.3s ease-out;
 

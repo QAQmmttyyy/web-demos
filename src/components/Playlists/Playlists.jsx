@@ -1,10 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import './Playlist.scss';
+import './Playlists.scss';
 
 // TODO: 分页
-class Playlist extends React.Component {
+class Playlists extends React.Component {
   constructor(props) {
     super(props);
     
@@ -30,6 +30,9 @@ class Playlist extends React.Component {
   render() {
     return (
       <div className="pl-wrap">
+        <div className="pl-cat">
+          全部
+        </div>
         <ul className="pl-content">
           {this.state.playlists.map((playlist) => {
             const {
@@ -79,7 +82,7 @@ class Playlist extends React.Component {
                   </Link>
                 </div>
                 <div className="pl-item-playcount f-thide">
-                  播放量：{playCount}
+                  播放：{playCount}
                 </div>
               </li>
             );
@@ -90,4 +93,4 @@ class Playlist extends React.Component {
   }
 }
 
-export default Playlist;
+export default Playlists;

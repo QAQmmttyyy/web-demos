@@ -71,13 +71,13 @@ class PlayListDetail extends React.Component {
               <div className="pld-info">
                 {/* cover */}
                 <img 
-                  src={`${coverUrl}?param=198y198`}
                   className="pld-info-cover"
+                  src={`${coverUrl}?param=198y198`}
                   alt="cover"
                 />
                 {/* title */}
                 <div className="pld-info-hd">
-                  <span className="pld-info-hd-label">歌单</span>
+                  {/* <span className="pld-info-hd-label">歌单</span> */}
                   <h2 className="pld-info-hd-title">{title}</h2>
                   <div className="pld-info-hd-count">
                     <span>播放量</span>
@@ -93,7 +93,7 @@ class PlayListDetail extends React.Component {
                   >
                     <img 
                       className="pld-info-author-avatar"
-                      src={`${author.avatarUrl}?param=30y30`} 
+                      src={`${author.avatarUrl}?param=30y30`}
                       alt="avatar"/>
                     <span className="pld-info-author-name">
                       {author.name}
@@ -109,13 +109,15 @@ class PlayListDetail extends React.Component {
                     className="pld-info-operation-btn pld-info-operation-playall"
                     onClick={() => {this.handleClickPlayallOrAddall(playAll)}}
                   >
-                    播放全部
+                    <i className="pld-info-operation-icon playall"></i>
+                    播放
                   </span>
                   <span 
                     className="pld-info-operation-btn pld-info-operation-addall"
                     onClick={() => {this.handleClickPlayallOrAddall(addAll)}}
                   >
-                    +
+                    <i className="pld-info-operation-icon addall"></i>
+                    添加
                   </span>
                 </div>
                 {/* tags */}
@@ -134,10 +136,10 @@ class PlayListDetail extends React.Component {
                   })}
                 </p>
                 {/* intro */}
-                <p className="pld-info-intro">
+                {/* <p className="pld-info-intro">
                   <span>简介：</span>
                   {intro.slice(3)}
-                </p>
+                </p> */}
               </div>
               <SongTable songlist={songlist}/>
             </React.Fragment>

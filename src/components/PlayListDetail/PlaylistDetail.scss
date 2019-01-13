@@ -12,39 +12,48 @@ $text-color-5: #cccccc;
 $text-color-6: #ffffff;
 $line-height-size: 28px;
 $cover-size: 198px;
+$author-height-size: 24px;
 
 .pld-info {
   box-sizing: border-box;
   min-width: 754px;
   min-height: $cover-size;
   margin: 30px;
+  margin-top: 10px;
   padding-left: 228px;
 
   &-cover {
     float: left;
     width: $cover-size;
     height: $cover-size;
+    box-sizing: border-box;
+    padding: 4px;
+    border: 1px solid #d9d9d9;
+    margin-top: -5px;
     margin-left: -228px;
   }
   &-hd {
     position: relative;
-    padding: 0 48px 0 50px;
-    margin-bottom: 10px;
+    padding-right: 48px;
+    // padding: 0 48px 0 50px;
+    padding-top: 4px;
+    margin-bottom: 14px;
 
-    &-label {
-      float: left;
-      padding: 0 6px;
-      margin-top: 4px;
-      margin-left: -50px;
-      border: 1px solid $label-color;
-      font-size: 12px;
-      line-height: 18px;
-      color: $label-color;
-    }
+    // &-label {
+    //   float: left;
+    //   padding: 0 6px;
+    //   margin-top: 4px;
+    //   margin-left: -50px;
+    //   border: 1px solid $label-color;
+    //   font-size: 12px;
+    //   line-height: 18px;
+    //   color: $label-color;
+    // }
+
     &-title {
       margin: 0;
       font-size: 24px;
-      font-weight: medium;
+      font-weight: normal;
       line-height: 28px;
       color: $text-color-2;
       // 单词换行 规则
@@ -54,6 +63,7 @@ $cover-size: 198px;
       // 空白符处理规则
       white-space: normal; 
     }
+
     &-count {
       position: absolute;
       top: 0;
@@ -73,79 +83,121 @@ $cover-size: 198px;
     }
   }
   &-author {
-    height: 30px;
-    line-height: 30px;
+    height: $author-height-size;
+    line-height: $author-height-size;
 
     a {
       display: inline-block;
-      height: 30px;
+      height: $author-height-size;
       margin-right: 20px;
     }
     &-avatar {
       display: inline-block;
-      width: 30px;
-      height: 30px;
+      width: $author-height-size;
+      height: $author-height-size;
       margin-right: 10px;
-      border-radius: 50%;
+      // border-radius: 50%;
     }
     &-name {
       display: inline-block;
       vertical-align: top;
-      font-size: 14px;
-      color: $text-color-3;
+      font-size: 12px;
+      color: #0084FF;
     }
     &-pubtime {
       display: inline-block;
       vertical-align: top;
-      font-size: 10px;
+      font-size: 12px;
       color: $text-color-4;
     }
   }
   &-operation {
-    margin: 18px 0;
+    margin: 28px 0;
 
     &-btn {
-      display: inline-block;
-      height: 26px;
-      padding: 0 10px;
-      border-radius: 2px;
-      font-size: 12px;
-      line-height: 26px;
+      display: inline-flex;
+      align-items: center;
+      height: 32px;
+      padding: 0 16px;
+      margin-right: 10px;
+      border-radius: 3px;
+      font-size: 14px;
+      line-height: 32px;
       cursor: pointer;
       vertical-align: top;
     }
-    
-    &-playall,
-    &-addall {
-      background-color: $label-color;
-      color: $text-color-6;
-    }
-    &-playall:hover,
-    &-addall:hover {
-      background-color: $primary-color;
-    }
     &-playall {
-      border-top-right-radius: 0;
-      border-bottom-right-radius: 0;
+      background-color: rgba(250, 217, 97, 1);
+      color: #444444;
+
+      &:hover {
+        background-color: rgb(243, 210, 93);
+      }
     }
     &-addall {
-      border-left: 1px solid $primary-color-lighter;
-      border-top-left-radius: 0;
-      border-bottom-left-radius: 0;
-      font-size: 14px;
+      background-color: rgba(250, 217, 97, 0.28);
+      color: #A08710;
+
+      &:hover {
+        background-color: rgba(224, 194, 85, 0.28);
+      }
     }
+    &-icon {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center center;
+      margin-right: 10px;
+
+      &.playall {
+        background-image: url(./images/play.png);
+      }
+      &.addall {
+        background-image: url(./images/plus.png);
+      }
+    }
+    // ,
+    //  {
+    //   background-color: $label-color;
+    //   color: $text-color-6;
+    // }
+    // &-playall:hover,
+    // &-addall:hover {
+    //   background-color: $primary-color;
+    // }
+    // &-playall {
+    //   border-top-right-radius: 0;
+    //   border-bottom-right-radius: 0;
+    // }
+    // &-addall {
+    //   border-left: 1px solid $primary-color-lighter;
+    //   border-top-left-radius: 0;
+    //   border-bottom-left-radius: 0;
+    //   font-size: 14px;
+    // }
   }
   &-tags {
-    margin-bottom: 4px;
+    // margin-bottom: 4px;
     font-size: 12px;
-    line-height: 20px;
+    line-height: 24px;
     
     span {
-      color: $text-color-2;
+      color: #8590A6;
     }
     a {
+      display: inline-block;
+      height: 24px;
+      padding: 0 11px;
+      background-color: rgba(133, 144, 166, 0.1);
+      border-radius: 24px;
       margin-right: 8px;
-      color: $tag-link-color;
+      color: #8590A6;
+    }
+    a:hover {
+      background-color: rgba(0, 132, 255, 0.1);
+      color: #0084FF;
     }
   }
   &-intro {
