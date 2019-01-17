@@ -4,12 +4,12 @@ $btn-size: $font-size;
 $line-height-size: 22px;
 // color
 $font-color-1: #000000; // name
-$font-color-2: #999; // alias artists album duration8c8c8c
-$font-color-3: #b5b5b5; // index thb5b5b5
+$font-color-2: #999; //  artists album duration 8c8c8c
+$font-color-3: #b5b5b5; // index th alias b5b5b5
 
 .st-table {
   // width: 100%;
-  // width: 980px;
+  width: 900px;
   // min-width: 980px;
   
   margin: 0 auto 22px;
@@ -41,7 +41,7 @@ $font-color-3: #b5b5b5; // index thb5b5b5
 
   .st-tbody {
 
-    .st-tr:nth-child(even) {
+    .st-tr:nth-child(odd) {
       background-color: #fbfbfb;
     }
     .st-tr {
@@ -63,7 +63,7 @@ $font-color-3: #b5b5b5; // index thb5b5b5
 
       &-index {
         // width: $font-size * 2;
-        // min-width: $font-size * 2;
+        min-width: 18px;
         padding: 7px 10px;
         // border-bottom-width: 0;
         text-align: right;
@@ -140,7 +140,7 @@ $font-color-3: #b5b5b5; // index thb5b5b5
 
       &-music {
         display: flex;
-        width: $font-size * 21;
+        width: $font-size * 25;
         margin-right: $line-height-size;
         // position: relative;
 
@@ -155,7 +155,7 @@ $font-color-3: #b5b5b5; // index thb5b5b5
             color: $font-color-1;
 
             .alias {
-              color: $font-color-2;
+              color: $font-color-3;
             }
           }
           // &-artists a {
@@ -172,16 +172,17 @@ $font-color-3: #b5b5b5; // index thb5b5b5
           align-items: center;
           flex: 0 0 auto;
           // margin: 0 $line-height-size;
-          margin-left: $line-height-size;
+          // margin-left: $line-height-size;
 
           .st-btn {
             &-play,
             &-pause,
-            &-add {
+            &-add,
+            &-delete {
               // vertical-align: top;
               // margin-top: ($line-height-size * 2 - $btn-size) / 2;
-              background-size: $btn-size - 2;
-              margin-right: $font-size;
+              background-size: auto $btn-size - 2;
+              margin-left: $font-size;
             }
             &-play {
               background-image: url(./images/play.png);
@@ -192,13 +193,17 @@ $font-color-3: #b5b5b5; // index thb5b5b5
             &-add {
               background-image: url(./images/add.png);
             }
+            &-delete {
+              background-image: url(./images/del.png);
+              background-size: auto $btn-size - 4;
+            }
           }
         }
       }
 
       // div
       &-artists {
-        width: $font-size * 15;
+        width: $font-size * 10;
         padding-right: $line-height-size;
         // overflow: hidden;
         // white-space: nowrap;
@@ -234,7 +239,7 @@ $font-color-3: #b5b5b5; // index thb5b5b5
         .st-btn-source {
           vertical-align: top;
           margin-top: 1px;
-          background-image: url(./images/liked.png);
+          background-image: url(./images/link.png);
         }
       }
 
@@ -251,7 +256,7 @@ $font-color-3: #b5b5b5; // index thb5b5b5
     display: inline-block;
     width: $btn-size;
     height: $btn-size;
-    background-size: 100%;
+    background-size: auto 100%;
     background-repeat: no-repeat;
     background-position: center center;
     cursor: pointer;

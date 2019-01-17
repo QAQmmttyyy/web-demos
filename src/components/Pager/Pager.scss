@@ -1,0 +1,55 @@
+.p-pager {
+  margin: 20px 0px;
+  text-align: center;
+
+  .btn,
+  .p-num {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0px 3px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: rgb(204, 204, 204);
+    border-radius: 2px;
+  }
+
+  .btn {
+    width: 69px;
+    height: 24px;
+    padding: 0px;
+    line-height: 24px;
+    background-color: rgba(133, 144, 166, 0.1);
+    color: rgb(133, 144, 166);
+    // text-align: left;
+
+    &:hover {
+      background-color: rgba(133, 144, 166, 0.2);
+    }
+  }
+
+  .p-num {
+    height: 22px;
+    background-color: rgb(255, 255, 255);
+    line-height: 22px;
+    padding: 0px 8px;
+    color: #333333;
+
+    &:hover {
+      background-color: #f5f5f5;
+      border-color: #999999;
+    }
+  }
+
+  .p-dot {
+    margin: 0 2px;
+    letter-spacing: 1px;
+  }
+
+  .p-num.selected {
+    background-color: rgb(255, 212, 38);
+    border-color: rgb(255, 212, 38);
+    color: #ffffff;
+    cursor: default;
+  }
+
+}

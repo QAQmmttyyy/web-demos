@@ -24,7 +24,7 @@ class Header extends React.Component {
         desc: '歌手',
       },
       {
-        to: '/latest',
+        to: '/albums',
         desc: '新碟上架',
       }
     ];

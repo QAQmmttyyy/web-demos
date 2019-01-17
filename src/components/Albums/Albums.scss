@@ -2,36 +2,29 @@ $font-size: 14px;
 $padding-size: 32px;
 $line-height-size: 22px;
 
-
-// .pl-wrap {
-//   font-size: 0;
-//   min-width: 762 + $padding-size;
-//   max-width: 1040 + $padding-size;
-//   // margin: ($font-size * 3) auto;
-// }
-.pl-cat {
+.alb-cat {
   font-size: 24px;
   line-height: 32px;
 }
-.pl-cvrlst {
+.alb-cvrlst {
   margin-top: 30px;
-  margin-left: -50px;
+  margin-left: -33px;
   font-size: 0;
 
   li {
     // float: left;
     display: inline-block;
-    width: 140px;
-    height: 205px;
-    padding: 0 0 30px 50px;
+    width: 153px;
+    height: 178px;
+    padding: 0 0 30px 33px;
     overflow: hidden;
     line-height: 1.4;
   }
 
   .cover {
     position: relative;
-    width: 140px;
-    height: 140px;
+    width: 130px;
+    height: 130px;
 
     img {
       display: block;
@@ -43,10 +36,10 @@ $line-height-size: 22px;
       position: absolute;
       top: 0;
       left: 0;
-      width: 100%;
-      height: 100%;
+      width: 153px;
+      height: 130px;
       background: url(../../images/coverall.png) no-repeat;
-      background-position: 0 0;
+      background-position: 0 -845px;
     }
 
     .icon-play {
@@ -77,26 +70,21 @@ $line-height-size: 22px;
       color: #000;
       white-space: nowrap;
     }
-    .title:hover {
-      text-decoration: underline;
+  }
+
+  .artists {
+    width: 100%;
+    font-size: 12px;
+
+    .nm {
+      white-space: nowrap;
+    }
+    a {
+      color: #666;
     }
   }
 
-  .author {
-    margin-bottom: 3px;
-    font-size: 12px;
-    color: #444444;
-    white-space: nowrap;
-    cursor: default;
+  a:hover {
+    text-decoration: underline;
   }
-
-  .playcount {
-    font-size: 12px;
-    color: #999999;
-    white-space: nowrap;
-  }
-  // .author, .playcount {
-  //   height: $line-height-size;
-  // }
-
 }

@@ -7,14 +7,16 @@ import PlayerContext from './context/PlayerContext';
 import Header from './components/Header/Header.jsx';
 import Discover from './components/Discover/Discover.jsx';
 import Playlists from './components/Playlists/Playlists.jsx';
-
-import PlaylistDetail from './components/PlaylistDetail/PlaylistDetail.jsx';
-import DjRadioDetail from './components/DjRadioDetail/DjRadioDetail.jsx';
-import VideoDetail from './components/VideoDetail/VideoDetail.jsx';
-import SongDetail from './components/SongDetail/SongDetail.jsx';
+import Albums from './components/Albums/Albums.jsx';
 import Player from './components/Player/Player.jsx';
 
+import PlaylistDetail from './components/PlaylistDetail/PlaylistDetail.jsx';
+import AlbumDetail from './components/AlbumDetail/AlbumDetail.jsx';
+import VideoDetail from './components/VideoDetail/VideoDetail.jsx';
+import SongDetail from './components/SongDetail/SongDetail.jsx';
+
 class App extends React.Component {
+
   constructor(props) {
     super(props);
     // PlayerContext value
@@ -29,6 +31,8 @@ class App extends React.Component {
     // bind this to method
     this.play = this.play.bind(this);
     this.pause = this.pause.bind(this);
+    this.deleteSong = this.deleteSong.bind(this);
+    this.clearPlaylist = this.clearPlaylist.bind(this);
     this.playAll = this.playAll.bind(this);
     this.addAll = this.addAll.bind(this);
     this.playSong = this.playSong.bind(this);
@@ -77,12 +81,77 @@ class App extends React.Component {
         this.setState({
           currentSong: this.state.playingList[index],
           curSongIndex: index,
-          isPause: false
+          isPause: false,
         });
       } 
     }
   }
 
+  pause() {
+    this.setState({ isPause: true });
+  }
+
+  // 删除歌曲
+  deleteSong(songIndex) {
+    const appState = this.state;
+
+    const playingList = appState.playingList;
+    const curSongIndex = appState.curSongIndex;
+
+    l_array.remove(playingList, (val, idx) => idx === songIndex);
+
+    if (songIndex < curSongIndex) {
+      this.setState({
+        playingList: playingList,
+        curSongIndex: curSongIndex - 1,
+      });
+    } else if (songIndex === curSongIndex) {
+      this.setState({
+        playingList: playingList,
+        currentSong: playingList[songIndex],
+        curSongIndex: songIndex,
+        isPause: false,
+      });
+    } else {
+      this.setState({ playingList: playingList });
+    }
+  }
+
+  clearPlaylist() {
+    this.setState({
+      playingList: [],
+      currentSong: {},
+      curSongIndex: -1,
+      isPause: true,
+    });
+  }
+
+  playAll(songlist) {
+    this.setState({
+      playingList: songlist,
+      curSongIndex: -1,
+    }, () => this.play(0));
+  }
+
+  addAll(songlist) {
+    const playingList = this.state.playingList;
+
+    if (playingList.length) {
+
+      // 歌单间重复的歌曲也被去重了
+      const songToAdd = l_array.differenceBy(songlist, playingList, 'id');
+      console.log(songToAdd);
+
+      if (songToAdd.length) {
+        // 这一行直接以非 setState 的方式对 this.state 做了修改
+        playingList.splice(this.state.curSongIndex + 1, 0, ...songToAdd);
+        // 这一行只是单纯地要触发 render
+        this.setState({ playingList: playingList });
+      }
+    } else {
+      this.playAll(songlist);
+    }
+  }
   // 添加并播放单首歌曲
   playSong(song) {
     const appState = this.state;
@@ -183,39 +252,6 @@ class App extends React.Component {
     }
 
   }
-
-  pause() {
-    this.setState({ isPause: true });
-  }
-
-  playAll(songlist) {
-    this.setState({
-      playingList: songlist,
-      curSongIndex: -1,
-    }, () => this.play(0));
-  }
-
-  addAll(songlist) {
-    const playingList = this.state.playingList;
-
-    if (playingList.length) {
-
-      // 歌单间重复的歌曲也被去重了
-      const songToAdd = l_array.differenceBy(songlist, playingList, 'id');
-      console.log(songToAdd);
-
-      if (songToAdd.length) {
-        // 这一行直接以非 setState 的方式对 this.state 做了修改
-        playingList.splice(this.state.curSongIndex + 1, 0, ...songToAdd);
-        // 这一行只是单纯地要触发 render
-        this.setState({ playingList: playingList });
-      }
-    } else {
-      this.playAll(songlist);
-    }
-  }
-
-
   // render
   render() {
     return (
@@ -225,52 +261,51 @@ class App extends React.Component {
             playerState: this.state,
             play: this.play,
             pause: this.pause,
+            deleteSong: this.deleteSong,
+            clearPlaylist: this.clearPlaylist,
             playAll: this.playAll,
             addAll: this.addAll,
             playSong: this.playSong,
             addSongToNext: this.addSongToNext,
           }}
         >
-          {/* app ui */}
-          {/* <div style={{ position: "relative" }}> */}
-            <Header />
-            <div>
-              <div style={{
-                width: 900,
-                padding: '40px 40px 10px',
-                margin: '10px auto 80px',
-                backgroundColor: 'white',
-                borderRadius: '2px',
-                boxShadow: '0 1px 3px rgba(26, 26, 26, 0.1)',
-              }}>
-                <Switch>
-                  {/* 常规一级路由 */}
-                  <Redirect exact from="/" to="/discover"/>
-                  <Route path="/discover" component={Discover}/>
-                  <Route path="/playlists" component={Playlists}/>
+          <Header />
+          <div style={{
+            width: 900,
+            minHeight: '80vh',
+            padding: '40px 40px 10px',
+            margin: '10px auto 80px',
+            backgroundColor: 'white',
+            borderRadius: '2px',
+            boxShadow: '0 1px 3px rgba(26, 26, 26, 0.1)',
+          }}>
+            <Switch>
+              {/* 常规一级路由 */}
+              <Redirect exact from="/" to="/discover"/>
+              <Route path="/discover" component={Discover}/>
+              <Route path="/playlists" component={Playlists}/>
+              <Route path="/albums" component={Albums}/>
 
-                  {/* 提升层级：歌单/电台详情页，会有query params，与一级显示区域相同 */}
-                  <Route path="/playlist" component={PlaylistDetail}/>
-                  <Route path="/djradio" component={DjRadioDetail}/>
+              {/* 提升层级：歌单/电台详情页，会有query params，与一级显示区域相同 */}
+              <Route path="/playlist" component={PlaylistDetail}/>
+              <Route path="/album" component={AlbumDetail}/>
 
-                  {/* 提升层级：song详情页，会有query params，显示区域为：除header/footer以外 */}
-                  <Route path="/song" component={SongDetail}/>
+              {/* 提升层级：song详情页，会有query params，显示区域为：除header/footer以外 */}
+              <Route path="/song" component={SongDetail}/>
 
-                  {/* 提升层级：视频详情页，会有query params，显示区域为：除header以外 */}
-                  <Route path="/video" component={VideoDetail}/>
-                </Switch>
-              </div>
-            </div>
-            <footer style={{
-                position: 'fixed',
-                bottom: 0,
-                width: '100%',
-                backgroundColor: "#ffffff",
-              }}
-            >
-              <Player />
-            </footer>
-          {/* </div> */}
+              {/* 提升层级：视频详情页，会有query params，显示区域为：除header以外 */}
+              <Route path="/video" component={VideoDetail}/>
+            </Switch>
+          </div>
+          <footer style={{
+              position: 'fixed',
+              bottom: 0,
+              width: '100%',
+              backgroundColor: "#ffffff",
+            }}
+          >
+            <Player />
+          </footer>
         </PlayerContext.Provider>
       </Router>
     );

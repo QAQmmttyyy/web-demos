@@ -23,6 +23,8 @@ class Player extends React.Component {
     this.audioRef = React.createRef();
     this.progressFrontRef = React.createRef();
     this.volumeBarFrontRef = React.createRef();
+    // this.audioCtrlPanel = React.createRef();
+    // this.plPanel = React.createRef();
 
     this.curSongIndex = -1;
     this.audioAmount = 0;
@@ -136,9 +138,18 @@ class Player extends React.Component {
   }
 
   handleClickListBtn() {
-    this.setState((state) => ({
-      isOpen: !state.isOpen
-    }));
+    this.setState((state) => ({ isOpen: !state.isOpen }));
+    // window.document.onclick = this.handleClickDoc.bind(this);
+  }
+  // handleClickDoc(ev) {
+  //   if (!this.plPanel.current.contains(ev.target)) {
+  //     window.document.onclick = null;
+  //     this.setState((state) => ({ isOpen: !state.isOpen }));
+  //   }
+  // }
+
+  handleClickClear(funcClear) {
+    funcClear();
   }
 
   // User ev handler-progressbar
@@ -396,7 +407,7 @@ class Player extends React.Component {
   render() {
     return (
       <PlayerContext.Consumer>
-        {({ playerState, play, pause }) => {
+        {({ playerState, play, pause, clearPlaylist }) => {
           const {
             playingList,
             currentSong,
@@ -414,7 +425,10 @@ class Player extends React.Component {
           }`;
 
           return (
-            <div className="audio-controls-panel">
+            <div 
+              // ref={this.audioCtrlPanel}
+              className="audio-controls-panel"
+            >
               {/* music */}
               <audio 
                 ref={this.audioRef}
@@ -533,9 +547,27 @@ class Player extends React.Component {
               </div>
 
               {/* 播放列表 */}
-              <div className={
-                'playlist-panel' + (this.state.isOpen ? '' : ' dis-hide')
-              }>
+              <div 
+                // ref={this.plPanel}
+                className={
+                  'playlist-panel' + (this.state.isOpen ? '' : ' dis-hide')
+                }
+              >
+                {/* <h3>播放列表</h3> */}
+                <div className="plp-header">
+                  <p className="plp-info">
+                    { this.audioAmount 
+                      ? `播放列表(${this.audioAmount})` 
+                      : '播放列表' }
+                  </p>
+                  <div 
+                    className="plp-operation"
+                    onClick={() => this.handleClickClear(clearPlaylist)}
+                  >
+                    <i className="icon-delete"></i>
+                    清空
+                  </div>
+                </div>
                 <SongTable 
                   songlist={playingList}
                   hasLike={false}

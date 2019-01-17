@@ -207,23 +207,56 @@ $volume-btn-bg-size: 14px;
 
 
   .playlist-panel {
-    height: 500px;
-    background-color: #fff;
-    border: 1px solid #000;
     position: absolute;
-    
-    bottom: 52px;
+    bottom: 67px;
     right: 0;
-    overflow: auto;
+    // width: 600px;
+    height: 70vh;
+    background-color: #fff;
+    border: 1px solid #d1d1d1;
+    border-bottom-width: 0;
+    box-shadow: -1px -1px 3px rgba(26, 26, 26, 0.25);
+    overflow-y: scroll;
     
-    ul {
-      padding-left: 0;
-      list-style: none;
-      font-size: 12px;
-      color: #333333;
+    // h3 {
+    //   height: 42px;
+    //   padding-left: 38px;
+    //   background-color: #f4f4f4;
+    //   border-bottom: 1px solid #d1d1d1;
+    //   font-size: 16px;
+    //   color: #333333;
+    //   line-height: 40px;
+    //   // font-weight: 600;
+    // }
+
+    .plp-header {
+      display: flex;
+      justify-content: space-between;
+      height: 36px;
+      padding: 0 22px 0 38px;
+      border-bottom: 1px solid #dddddd;
+      font-size: 14px;
+      line-height: 36px;
+      color: #666666;
+
+      .plp-operation {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+
+        .icon-delete {
+          display: inline-block;
+          width: 14px;
+          height: 14px;
+          margin-right: 3px;
+          background-image: url(./assets/delete-all.png);
+          background-size: auto 100%;
+          background-repeat: no-repeat;
+          background-position: center center;
+          cursor: pointer;
+        }
+      }
     }
-    li.cur-play {
-      color: #7800bd;
-    }
+
   }
 }

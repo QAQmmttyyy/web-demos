@@ -16,6 +16,10 @@ class SongTable extends React.Component {
     funcAddSongToNext(_.cloneDeep(this.props.songlist[songIndex]));
   }
 
+  handleDeleteSong(funcDeleteSong, songIndex) {
+    funcDeleteSong(songIndex);
+  }
+
   handlePlayPause(funcPlayPause, songIndex) {
     funcPlayPause(songIndex);
   }
@@ -33,7 +37,7 @@ class SongTable extends React.Component {
 
     return (
       <PlayerContext.Consumer>
-        {({ playerState, play, pause, playSong, addSongToNext  }) => {
+        {({ playerState, play, pause, deleteSong, playSong, addSongToNext  }) => {
 
           const {
             currentSong,
@@ -43,14 +47,17 @@ class SongTable extends React.Component {
           const theadTr = (
             <tr className="st-tr">
               <th className="st-th st-th-index">
-                #
+                {inPlaylistPanel ? null : '#'}
               </th>
               {hasLike ? (
                 <th className="st-th st-th-like">
                   喜欢
                 </th>
               ) : null}
-              <th className="st-th">
+              <th 
+                className="st-th"
+                style={inPlaylistPanel ? {paddingLeft: 0} : null}
+              >
                 音乐
               </th>
               <th className="st-th">
@@ -132,12 +139,14 @@ class SongTable extends React.Component {
                   );
                 });
 
-              const 
-                albumLinkPart = album.link.split('?'),
-                albumLinkLocation = {
-                  pathname: albumLinkPart[0],
-                  search: `?${albumLinkPart[1]}`,
-                };
+              if (hasAlbum) {
+                var 
+                  albumLinkPart = album.link.split('?'),
+                  albumLinkLocation = {
+                    pathname: albumLinkPart[0],
+                    search: `?${albumLinkPart[1]}`,
+                  };
+              }  
 
               let 
                 trCls = '',
@@ -164,17 +173,19 @@ class SongTable extends React.Component {
                 
               } else {
                 trCls = 'st-tr';
-                sttdindexChildren = index + 1;
+                sttdindexChildren = inPlaylistPanel ? null : (index + 1);
                 operationPlayPauseCls = 'st-btn st-btn-play';
                 funcPlayPauseParam = inPlaylistPanel ? play : playSong;
               }
 
-              const 
-                sourceLinkPart = source.link.split('?'),
-                sourceLinkLocation = {
-                  pathname: sourceLinkPart[0],
-                  search: `?${sourceLinkPart[1]}`,
-                };
+              if (hasSource) {
+                var 
+                  sourceLinkPart = source.link.split('?'),
+                  sourceLinkLocation = {
+                    pathname: sourceLinkPart[0],
+                    search: `?${sourceLinkPart[1]}`,
+                  };
+              }
 
               return (
                 <tr key={id} className={trCls}>
@@ -188,7 +199,10 @@ class SongTable extends React.Component {
                     </td>
                   ) : null}
                   {/* 音乐 */}
-                  <td className="st-td">
+                  <td 
+                    className="st-td"
+                    style={inPlaylistPanel ? {paddingLeft: 0} : null}
+                  >
                     <div className="st-td-music">
                       <div className="st-td-music-info">
                         <h4 
@@ -212,6 +226,12 @@ class SongTable extends React.Component {
                           >
                             play|pause
                           </span>
+                          <span 
+                            className="st-btn st-btn-delete"
+                            onClick={() => this.handleDeleteSong(deleteSong, index)}
+                          >
+                            del
+                          </span>                          
                         </div>
                       ) : (
                         <div className="st-td-music-operation">
@@ -234,6 +254,7 @@ class SongTable extends React.Component {
                   <td className="st-td">
                     <div 
                       className="st-td-artists f-thide"
+                      style={inPlaylistPanel ? {width:100} : null}
                       title={artistsTitle}
                     >
                       {artistArr}
@@ -258,7 +279,7 @@ class SongTable extends React.Component {
                       <div className="st-td-source">
                         <Link 
                           to={sourceLinkLocation}
-                          title={source.title}
+                          title={`来自歌单：${source.title}`}
                           className="st-btn st-btn-source"
                         >
                           来源
@@ -278,10 +299,15 @@ class SongTable extends React.Component {
 
           {/* Consumer return */}
           return (
-            <table className="st-table">
-              <thead className="st-thead">
-                {theadTr}
-              </thead>
+            <table 
+              className="st-table"
+              style={inPlaylistPanel ? {width: 627} : null}
+            >
+              {!inPlaylistPanel ? (
+                <thead className="st-thead">
+                  {theadTr}
+                </thead>
+              ) : null}
               <tbody className="st-tbody">
                 {trArr}
               </tbody>

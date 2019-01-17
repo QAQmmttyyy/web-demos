@@ -7,7 +7,7 @@ import SongTable from '../SongTable/SongTable.jsx';
 
 import './PlaylistDetail.scss';
 
-class PlayListDetail extends React.Component {
+class PlaylistDetail extends React.Component {
 
   constructor(props) {
     super(props);
@@ -22,7 +22,7 @@ class PlayListDetail extends React.Component {
     // p0 页数 可变
     const pldUrl = `${
       process.env.PUBLIC_URL
-    }/api_mock_data/playlist/p0/pl-${this.plID}.json`;
+    }/api_mock_data/playlist_detail/p0/pl-${this.plID}.json`;
 
     window.fetch(pldUrl).then(
       response => response.statusText === 'OK' ? response.json() : {}
@@ -154,4 +154,4 @@ class PlayListDetail extends React.Component {
   }
 }
 
-export default PlayListDetail;
+export default PlaylistDetail;

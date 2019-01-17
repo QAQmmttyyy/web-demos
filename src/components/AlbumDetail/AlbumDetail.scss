@@ -1,0 +1,135 @@
+$primary-color: #cc3333;
+$primary-color-darker: #b12323;
+$primary-color-lighter: #d95d59;
+$label-color: #e03f40;
+$link-color: #0084FF;
+
+$text-color-1: #000000;
+$text-color-2: #333333;
+$text-color-3: #666666;
+$text-color-4: #999999;
+$text-color-5: #cccccc;
+$text-color-6: #ffffff;
+$line-height-size: 28px;
+$cover-size: 177px;
+$author-height-size: 24px;
+
+.ad-info {
+  box-sizing: border-box;
+  min-width: 754px;
+  min-height: $cover-size;
+  margin: 30px;
+  margin-top: 10px;
+  padding-left: 236px;
+
+  &-cover {
+    float: left;
+    position: relative;
+    width: $cover-size;
+    height: $cover-size;
+    margin-left: -236px;
+
+    img {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .msk {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 209px;
+      height: $cover-size;
+      background: url(./images/coverall.png) no-repeat;
+      background-position: 0 -986px;
+    }
+  }
+
+  &-hd {
+    position: relative;
+    // padding-top: 4px;
+    margin-bottom: 14px;
+
+    .title {
+      font-size: 24px;
+      line-height: 28px;
+      color: $text-color-2;
+      // 单词换行 规则
+      word-wrap: break-word;
+      // 单词换行点 规则
+      word-break: break-word;
+      // 空白符处理规则
+      white-space: normal;
+    }
+
+    .subtitle {
+      margin: 4px 0 5px;
+      font-size: 14px;
+      line-height: 14px;
+      color: #bababa;
+    }
+  }
+
+  &-artists a {
+    color: $link-color;
+  }
+
+  &-artists, &-pubtime, &-publisher {
+    margin-top: 4px;
+    line-height: 18px;
+    color: $text-color-3;
+  }
+
+  &-operation {
+    margin: 20px 0;
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      height: 32px;
+      padding: 0 16px;
+      margin-right: 10px;
+      border-radius: 16px;
+      font-size: 14px;
+      line-height: 32px;
+      cursor: pointer;
+      vertical-align: top;
+    }
+
+    .playall {
+      background-color: rgba(250, 217, 97, 1);
+      color: #444444;
+
+      &:hover {
+        background-color: rgb(243, 210, 93);
+      }
+    }
+
+    .addall {
+      background-color: rgba(250, 217, 97, 0.28);
+      color: #A08710;
+
+      &:hover {
+        background-color: rgba(224, 194, 85, 0.28);
+      }
+    }
+
+    .icon {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center center;
+      margin-right: 10px;
+
+      &.play {
+        background-image: url(./images/play.png);
+      }
+      &.add {
+        background-image: url(./images/plus.png);
+      }
+    }
+  }
+}
