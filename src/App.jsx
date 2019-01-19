@@ -291,7 +291,7 @@ class App extends React.Component {
               <Route path="/album" component={AlbumDetail}/>
 
               {/* 提升层级：song详情页，会有query params，显示区域为：除header/footer以外 */}
-              <Route path="/song" component={SongDetail}/>
+              {/* <Route path="/song" component={SongDetail}/> */}
 
               {/* 提升层级：视频详情页，会有query params，显示区域为：除header以外 */}
               <Route path="/video" component={VideoDetail}/>

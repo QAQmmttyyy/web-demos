@@ -1,9 +1,10 @@
 import React from 'react';
-import { Link } from "react-router-dom";
+import { Switch, Route, Link, Redirect } from "react-router-dom";
 import l_lang from 'lodash/lang';
 
 import PlayerContext from '../../context/PlayerContext';
 import SongTable from '../SongTable/SongTable.jsx';
+import Tabs from '../Tabs/Tabs.jsx';
 
 import './AlbumDetail.scss';
 
@@ -41,7 +42,7 @@ class AlbumDetail extends React.Component {
   }
 
   render() {
-    const { location } = this.props;
+    const { location, match } = this.props;
     this.albumId = location.search.split('=')[1];
 
     if (this.state.albumInfo.hasOwnProperty('id')) {
@@ -54,6 +55,8 @@ class AlbumDetail extends React.Component {
         artists,
         publishTime,
         publisher,
+        songNum,
+        cmtNum,
         songlist,
       } = this.state.albumInfo;
 
@@ -96,6 +99,17 @@ class AlbumDetail extends React.Component {
             </a>
           );
         });
+
+      const tabInfo = [
+        {
+          to: `${match.url}/songs`,
+          desc: `歌曲(${songNum})`,
+        },
+        {
+          to: `${match.url}/cmts`,
+          desc: `评论(${cmtNum})`,
+        }
+      ];
 
       return (
         <PlayerContext.Consumer>
@@ -155,10 +169,36 @@ class AlbumDetail extends React.Component {
                   </span>
                 </div>
               </div>
-              <SongTable 
-                songlist={songlist}
-                hasAlbum={false}
-              />
+              
+              <Tabs info={tabInfo}/>
+              <Switch>
+                <Redirect 
+                  exact 
+                  from={`${match.path}`} 
+                  to={`${match.path}/songs`} 
+                />
+                <Route 
+                  path={`${match.path}/songs`} 
+                  render={() => {
+                    window.document.getElementById('root').scrollTo({
+                      top: 0,
+                      left: 0,
+                      // behavior: 'smooth'
+                    });
+                    return (
+                      <SongTable 
+                        songlist={songlist}
+                        hasAlbum={false}
+                      />
+                    );
+                  }}
+                />
+                <Route 
+                  path={`${match.path}/cmts`} 
+                  render={() => (<div>评论</div>)}
+                />
+              </Switch>
+              
             </React.Fragment>
           )}
         </PlayerContext.Consumer>

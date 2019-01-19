@@ -139,7 +139,7 @@ $volume-btn-bg-size: 14px;
         height: 100%;
         background-color: #000000;
         border-radius: $progress-height;
-        // transition: width 80ms ease-out;
+        transition: width 80ms ease-out;
         
         .volume-bar-btn {
           display: none;
@@ -208,26 +208,16 @@ $volume-btn-bg-size: 14px;
 
   .playlist-panel {
     position: absolute;
-    bottom: 67px;
+    bottom: 66px;
     right: 0;
     // width: 600px;
     height: 70vh;
-    background-color: #fff;
+    background-color: #fdfdfd;
     border: 1px solid #d1d1d1;
     border-bottom-width: 0;
     box-shadow: -1px -1px 3px rgba(26, 26, 26, 0.25);
     overflow-y: scroll;
-    
-    // h3 {
-    //   height: 42px;
-    //   padding-left: 38px;
-    //   background-color: #f4f4f4;
-    //   border-bottom: 1px solid #d1d1d1;
-    //   font-size: 16px;
-    //   color: #333333;
-    //   line-height: 40px;
-    //   // font-weight: 600;
-    // }
+    z-index: 10;
 
     .plp-header {
       display: flex;
@@ -235,6 +225,7 @@ $volume-btn-bg-size: 14px;
       height: 36px;
       padding: 0 22px 0 38px;
       border-bottom: 1px solid #dddddd;
+      background-color: rgba(245,245,245,.35);
       font-size: 14px;
       line-height: 36px;
       color: #666666;

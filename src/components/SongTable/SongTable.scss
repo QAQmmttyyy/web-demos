@@ -42,7 +42,7 @@ $font-color-3: #b5b5b5; // index th alias b5b5b5
   .st-tbody {
 
     .st-tr:nth-child(odd) {
-      background-color: #fbfbfb;
+      background-color: #f8f8f8;
     }
     .st-tr {
       transition: background-color 50ms;
@@ -54,9 +54,7 @@ $font-color-3: #b5b5b5; // index th alias b5b5b5
         display: flex;
       }
     }
-    .st-tr.is-playing {
-      background-color: #f1f1f1;
-    }
+
 
     .st-td {
       padding: 7px 0 7px 10px;
@@ -250,6 +248,18 @@ $font-color-3: #b5b5b5; // index th alias b5b5b5
         color: $font-color-3;
       }
     }
+
+    .st-tr.is-playing {
+      background-color: #f0f0f0;
+
+      .st-td {
+        color: #000000;
+        
+        a {
+          color: #000000;
+        }
+      }
+    }    
   }
 
   .st-btn {
@@ -261,7 +271,7 @@ $font-color-3: #b5b5b5; // index th alias b5b5b5
     background-position: center center;
     cursor: pointer;
     font-size: 0;
-    transition: background-image 0.2s;
+    // transition: background-image 0.2s;
   }
 }
 

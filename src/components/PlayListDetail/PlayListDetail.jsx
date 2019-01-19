@@ -1,9 +1,10 @@
 import React from 'react';
-import { Link } from "react-router-dom";
+import { Switch, Route, Link } from "react-router-dom";
 import l_lang from 'lodash/lang';
 
 import PlayerContext from '../../context/PlayerContext';
 import SongTable from '../SongTable/SongTable.jsx';
+import Tabs from '../Tabs/Tabs.jsx';
 
 import './PlaylistDetail.scss';
 
@@ -36,13 +37,14 @@ class PlaylistDetail extends React.Component {
     );
   }
 
+
   handleClickPlayallOrAddall(funcPlayallOrAddall) {
     const songlist = l_lang.cloneDeep(this.state.plDetail.songlist);
     funcPlayallOrAddall(songlist);
   }
 
   render() {
-    const { location } = this.props;
+    const { location, match } = this.props;
     this.plID = location.search.split('=')[1];
 
     if (this.state.plDetail.hasOwnProperty('id')) {
@@ -63,6 +65,23 @@ class PlaylistDetail extends React.Component {
   
       const playCount = playNum >= 10000 ? `${parseInt(playNum / 10000)}万` : playNum;
       const authorLinkParts = author.link.split('?');
+
+      const tabInfo = [
+        {
+          to: {
+            pathname: `${match.url}`,
+            search: `?id=${this.plID}`
+          },
+          desc: `歌曲(${songNum})`,
+        },
+        {
+          to: {
+            pathname: `${match.url}/cmts`,
+            search: `?id=${this.plID}`
+          },
+          desc: `评论(${cmtNum})`,
+        }
+      ];
 
       return (
         <PlayerContext.Consumer>
@@ -141,14 +160,29 @@ class PlaylistDetail extends React.Component {
                   {intro.slice(3)}
                 </p> */}
               </div>
-              <SongTable songlist={songlist}/>
+
+              <Tabs info={tabInfo}/>
+              <Switch>
+                <Route 
+                  path={`${match.path}`} 
+                  render={() => {
+                    
+                    return (<SongTable songlist={songlist}/>);
+                  }}
+                />
+                <Route 
+                  path={`${match.path}/cmts`} 
+                  render={() => (<div>评论</div>)}
+                />
+              </Switch>
+              
             </React.Fragment>
           )}
         </PlayerContext.Consumer>
       );
     } else {
       // TODO 占位符元素
-      return (<div>加载中...</div>);
+      return (<div></div>);
     }
 
   }

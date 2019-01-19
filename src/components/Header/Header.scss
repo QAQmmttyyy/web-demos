@@ -5,7 +5,7 @@
   box-shadow: 0 1px 3px rgba(26, 26, 26, 0.1);
   font-size: 16px;
 
-  &-mid {
+  .mid {
     display: flex;
     // justify-content: space-between;
     align-items: center;
@@ -13,7 +13,7 @@
     height: 100%;
     margin: 0 auto;
 
-    &-logo {
+    .logo {
       width: 34px;
       height: 34px;
       background-image: url(./images/logo3.png);
@@ -28,13 +28,13 @@
       color: #444444;
     }
 
-    &-tab {
+    .tab {
       display: flex;
       align-items: center;
       height: 100%;
       padding-left: 14px;
   
-      &-item {
+      .tab-item {
         height: 100%;
         padding: 0 22px;
         line-height: 52px;
@@ -48,11 +48,11 @@
           text-align: center;
         }
   
-        & &-selected {
+        &-selected {
           font-weight: 600;
         }
 
-        & &-selected::after {
+        &-selected::after {
           content: '';
           position: absolute;
           right: 0;

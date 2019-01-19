@@ -20,6 +20,7 @@ class SongBrief extends React.Component {
   }
 
   render() {
+    const { toggleSongSetail } = this.props;
     return (
       <PlayerContext.Consumer>
         {({ playerState }) => {
@@ -56,10 +57,13 @@ class SongBrief extends React.Component {
           return (
             <div className="mty-song-brief">
           		{/* cover */}
-          		<div className="mty-song-brief-cover">
-          			<Link to={songLocation}>
+          		<div 
+                className="mty-song-brief-cover"
+                onClick={() => toggleSongSetail()}
+              >
+          			<a>
           				{coverImg}
-                </Link>
+                </a>
           		</div>
           		{/* info */}
           		<div className="mty-song-brief-info">

@@ -5,23 +5,26 @@ import './Tabs.scss';
 
 class Tabs extends React.Component {
   render() {
-    const { info, justify } = this.props;
-
-    const tabsCls = `mty-tabs mty-tabs-${
-      justify ? justify : 'left'
-    }`;
+    const { info } = this.props;
 
     return (
-      <ul className={tabsCls}>
+      <ul className="u-tab">
         {info.map((tab, index) => (
           <li
             key={index}
-            className="mty-tabs-item"
+            className="tab-item"
           >
             <NavLink 
               exact
               to={tab.to}
-              activeClassName="mty-tabs-item-selected"
+              activeClassName="tab-item-selected"
+              onClick={() => {
+                window.document.getElementById('root').scrollTo({
+                  top: 0,
+                  left: 0,
+                  behavior: 'smooth'
+                });
+              }}
             >
               {tab.desc}
             </NavLink>

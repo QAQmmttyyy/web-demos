@@ -31,20 +31,20 @@ class Header extends React.Component {
 
     return (
       <div className="header">
-        <div className="header-mid">
-          <span className="header-mid-logo"></span>
+        <div className="mid">
+          <span className="logo"></span>
           {/* <h3>Music</h3> */}
           {/* tab 区 */}
-          <ul className="header-mid-tab">
+          <ul className="tab">
             {info.map((tab, index) => (
               <li
                 key={index}
-                className="header-mid-tab-item"
+                className="tab-item"
               >
                 <NavLink 
                   exact
                   to={tab.to}
-                  activeClassName="header-mid-tab-item-selected"
+                  activeClassName="tab-item-selected"
                 >
                   {tab.desc}
                 </NavLink>

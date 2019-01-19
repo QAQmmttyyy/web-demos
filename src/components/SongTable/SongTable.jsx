@@ -8,11 +8,13 @@ import './SongTable.scss';
 
 class SongTable extends React.Component {
 
-  handlePlayPauseSong(funcPlayPauseSong, songIndex) {
+  handlePlayPauseSong(ev, funcPlayPauseSong, songIndex) {
+    ev.stopPropagation();
     funcPlayPauseSong(_.cloneDeep(this.props.songlist[songIndex]));
   }
   
-  handleAddSong(funcAddSongToNext, songIndex) {
+  handleAddSong(ev, funcAddSongToNext, songIndex) {
+    ev.stopPropagation();
     funcAddSongToNext(_.cloneDeep(this.props.songlist[songIndex]));
   }
 
@@ -237,13 +239,13 @@ class SongTable extends React.Component {
                         <div className="st-td-music-operation">
                           <span 
                             className={operationPlayPauseCls}
-                            onClick={() => {this.handlePlayPauseSong(funcPlayPauseParam, index)}}
+                            onClick={(ev) => {this.handlePlayPauseSong(ev, funcPlayPauseParam, index)}}
                           >
                             play|pause
                           </span>
                           <span 
                             className="st-btn st-btn-add"
-                            onClick={() => this.handleAddSong(addSongToNext, index)}
+                            onClick={(ev) => this.handleAddSong(ev, addSongToNext, index)}
                           >
                             add|delete
                           </span>

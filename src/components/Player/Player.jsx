@@ -2,6 +2,7 @@ import React from 'react';
 
 import PlayerContext from '../../context/PlayerContext';
 import SongBrief from '../SongBrief/SongBrief.jsx';
+import SongDetail from '../SongDetail/SongDetail.jsx';
 import SongTable from '../SongTable/SongTable.jsx';
 
 import './Player.scss';
@@ -19,6 +20,8 @@ class Player extends React.Component {
       playProgress: '0',
       isPauseIco: false,
       isOpen: false,
+      showSongDetail: false,
+      curTimestamp: 0,
     };
     this.audioRef = React.createRef();
     this.progressFrontRef = React.createRef();
@@ -321,7 +324,7 @@ class Player extends React.Component {
       old = this.state.curTime,
       duration = this.audioRef.current.duration,
       currentTime = this.audioRef.current.currentTime;
-
+    
     const
       curTimeStr = this.timeFormat(currentTime),
       progress = `${(currentTime / duration * 100).toFixed(1)}%`;
@@ -329,10 +332,19 @@ class Player extends React.Component {
     if (old !== curTimeStr) {
       this.setState({
         curTime: curTimeStr,
-        playProgress: progress
+        playProgress: progress,
+        curTimestamp: currentTime,
       });
-    } else if (currentTime === duration) {
-      this.setState({ playProgress: progress });
+    } else {
+
+      if (currentTime === duration) {
+        this.setState({ 
+          playProgress: progress,
+          curTimestamp: currentTime,
+        });
+      } else {
+        this.setState({ curTimestamp: currentTime });
+      }
     }
   }
 
@@ -352,6 +364,12 @@ class Player extends React.Component {
       audioElem.currentTime = parseFloat(this.state.playProgress) / 100;
       console.log(this.state.playProgress);
     }
+  }
+
+  toggleSongDetail = () => {
+    this.setState(state => ({
+      showSongDetail: !state.showSongDetail
+    }));
   }
 
   // Util
@@ -444,7 +462,14 @@ class Player extends React.Component {
               >
               </audio>
 
-              <SongBrief />
+              <SongBrief toggleSongSetail={this.toggleSongDetail}/>
+
+              {this.state.showSongDetail ? (
+                <SongDetail 
+                  curSong={currentSong}
+                  curTimestamp={this.state.curTimestamp}
+                />
+              ) : null}
 
               {/* prev play/pause next */}
               <span 
