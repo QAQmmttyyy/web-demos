@@ -1,16 +1,14 @@
 %cover-dimension {
-  width: 52px;
-  height: 52px;
+  width: 48px;
+  height: 48px;
 }
 
 .mty-song-brief {
-  // &-container {
-  //   flex: none;
-  //   width: 100%;
-  //   height: 56px;
-  // }
+  position: absolute;
+  left: 0;
+  top: 0;
 
-  flex: 0 0 auto;
+  // flex: 0 0 auto;
   display: flex;
   align-items: center;
   width: 288px;
@@ -30,25 +28,41 @@
     
     a {
       position: relative;
+      // z-index: 9;
       display: block;
       @extend %cover-dimension;
       text-decoration: none;
       border-radius: 3px;
 
-      img { 
-        // display: block;
-        border-radius: 4px;
-        @extend %cover-dimension;
-      }
+    }
+    img { 
+      // display: block;
+      border-radius: 4px;
+      @extend %cover-dimension;
     }
 
-    
     a:hover::before {
       content: '';
       position: absolute;
+      top: 0;
+      left: 0;
+      // z-index: 10;
       @extend %cover-dimension;
-      background-image: url(./images/cover-arrow-44x44.png);
+      background-color: rgba(0,0,0,0.4);
+    }
+
+    a:hover::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      // z-index: 11;
+      @extend %cover-dimension;
+      background-image: url(./images/up-arrow.png);
+      background-repeat: no-repeat;
       background-position: center center;
+      background-size: 40% auto;
+      opacity: 0.8;
     }
   }
 

@@ -15,14 +15,14 @@ class Header extends React.Component {
         to: '/playlists',
         desc: '歌单',
       },
-      {
-        to: '/toplist',
-        desc: '排行榜',
-      },
-      {
-        to: '/artist',
-        desc: '歌手',
-      },
+      // {
+      //   to: '/toplist',
+      //   desc: '排行榜',
+      // },
+      // {
+      //   to: '/artist',
+      //   desc: '歌手',
+      // },
       {
         to: '/albums',
         desc: '新碟上架',

@@ -4,15 +4,15 @@ $btn-size: $font-size;
 $line-height-size: 22px;
 // color
 $font-color-1: #000000; // name
-$font-color-2: #999; //  artists album duration 8c8c8c
-$font-color-3: #b5b5b5; // index th alias b5b5b5
+$font-color-2: #333333; //  artists album  8c8c8c
+$font-color-3: #aaaaaa; // index th alias duration b5b5b5
 
 .st-table {
   // width: 100%;
   width: 900px;
   // min-width: 980px;
-  
   margin: 0 auto 22px;
+  
   border-collapse: collapse;
   font-size: $font-size;
   font-variant-numeric: tabular-nums;
@@ -20,13 +20,16 @@ $font-color-3: #b5b5b5; // index th alias b5b5b5
   cursor: default;
 
   .st-thead {
+    // background-color: #fafafa;
+    border-top: 1px solid #f5f5f5;
+    border-bottom: 1px solid #f5f5f5;
 
     .st-th {
       // height: $line-height-size * 2;
       // padding-left: 10px;
-      padding: 7px 0 7px 10px;
+      padding: 16px 0 16px 10px;
       font-weight: normal;
-      color: $font-color-3;
+      color: #999999;
   
       &-index {
         text-align: right;
@@ -41,28 +44,31 @@ $font-color-3: #b5b5b5; // index th alias b5b5b5
 
   .st-tbody {
 
-    .st-tr:nth-child(odd) {
-      background-color: #f8f8f8;
-    }
+    // .st-tr:nth-child(odd) {
+    //   background-color: #f8f8f8;
+    // }
     .st-tr {
-      transition: background-color 50ms;
+      border-bottom: 1px solid #f5f5f5;
+      transition: background-color 0.3s;
     }
     .st-tr:hover {
       background-color: #f5f5f5;
       // .st-td-music-cnt-wrap
       .st-td-music .st-td-music-operation {
-        display: flex;
+        // display: flex;
+        opacity: 1;
+        transition: opacity 0.3s;
       }
     }
 
 
     .st-td {
-      padding: 7px 0 7px 10px;
+      padding: 16px 0 16px 10px;
 
       &-index {
         // width: $font-size * 2;
         min-width: 18px;
-        padding: 7px 10px;
+        padding: 16px 10px;
         // border-bottom-width: 0;
         text-align: right;
         color: $font-color-3;
@@ -116,7 +122,7 @@ $font-color-3: #b5b5b5; // index th alias b5b5b5
       &-like {
         width: $font-size * 2;
         min-width: $font-size * 2;
-        padding: 7px 0;
+        padding: 16px 0;
         // border-bottom-width: 0;
         text-align: center;
 
@@ -166,9 +172,11 @@ $font-color-3: #b5b5b5; // index th alias b5b5b5
           // position: absolute;
           // top: $line-height-size / 2;
           // right: 0;
-          display: none;
+          display: flex;
           align-items: center;
           flex: 0 0 auto;
+          opacity: 0;
+          
           // margin: 0 $line-height-size;
           // margin-left: $line-height-size;
 
@@ -244,13 +252,14 @@ $font-color-3: #b5b5b5; // index th alias b5b5b5
       // td
       &-duration {
         // width: $font-size * 5;
-        padding: 7px 10px;
-        color: $font-color-3;
+        padding: 16px 10px;
+        color: #666666;
       }
     }
 
     .st-tr.is-playing {
-      background-color: #f0f0f0;
+      // background-color: #f0f0f0;
+      background-color: rgba(133, 144, 166, 0.1);
 
       .st-td {
         color: #000000;

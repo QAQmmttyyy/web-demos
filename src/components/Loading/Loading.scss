@@ -1,0 +1,21 @@
+.loading {
+  position: fixed;
+  top: 24%;
+  left: calc(50% - 16px);
+  width: 32px;
+  height: 32px;
+  margin: 100px auto;
+  background: url(./images/load-circle.png) no-repeat;
+  background-size: contain;
+  animation: spin 450ms linear 0s infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}

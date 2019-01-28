@@ -2,8 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import PlayerContext from '../../context/PlayerContext';
-import CoverPlaceholder from './images/cd-circle.png';
-// import CoverPlaceholder from './images/cd.png';
+import CoverPlaceholder from './images/Music.png';
 
 import './SongBrief.scss';
 
@@ -20,14 +19,15 @@ class SongBrief extends React.Component {
   }
 
   render() {
-    const { toggleSongSetail } = this.props;
+    const { showSongDetail, toggleSongDetail } = this.props;
+    
     return (
       <PlayerContext.Consumer>
         {({ playerState }) => {
           const { currentSong } = playerState;
 
           if (this.isEmptyObj(currentSong)) {
-            return;
+            {/* return; */}
 
             const coverImg = (
               <img 
@@ -59,11 +59,16 @@ class SongBrief extends React.Component {
           		{/* cover */}
           		<div 
                 className="mty-song-brief-cover"
-                onClick={() => toggleSongSetail()}
               >
-          			<a>
-          				{coverImg}
-                </a>
+                {showSongDetail ? coverImg : (
+            			<a 
+                    onMouseDown={(ev) => {
+                      if (ev.button === 0) toggleSongDetail();
+                    }}
+                  >
+            				{coverImg}
+                  </a>
+                )}
           		</div>
           		{/* info */}
           		<div className="mty-song-brief-info">
@@ -80,11 +85,10 @@ class SongBrief extends React.Component {
           			</div>
           		</div>
           		{/* operation */}
-          		<div className="mty-song-brief-operation">
-                {/* TODO 添加真实icon图片以及业务逻辑 */}
+          		{/* <div className="mty-song-brief-operation">
           			<i>like</i>
           			<i>share</i>
-          		</div>
+          		</div> */}
           	</div>
           );
         }}

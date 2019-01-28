@@ -68,6 +68,16 @@ class App extends React.Component {
     ];
   }
 
+  componentDidMount() {
+    const localData = window.localStorage.getItem('playData');
+    this.setState(JSON.parse(localData));
+  }
+
+  componentDidUpdate() {
+    const { playingList, currentSong, curSongIndex } = this.state;
+    window.localStorage.setItem('playData',JSON.stringify({ playingList, currentSong, curSongIndex }));
+  }
+
   // player operation
   // TODO 完善无版权歌曲处理
   // 播放playingList里有的歌曲
@@ -96,24 +106,33 @@ class App extends React.Component {
     const appState = this.state;
 
     const playingList = appState.playingList;
-    const curSongIndex = appState.curSongIndex;
+    let curSongIndex = appState.curSongIndex;
 
     l_array.remove(playingList, (val, idx) => idx === songIndex);
 
-    if (songIndex < curSongIndex) {
-      this.setState({
-        playingList: playingList,
-        curSongIndex: curSongIndex - 1,
-      });
-    } else if (songIndex === curSongIndex) {
-      this.setState({
-        playingList: playingList,
-        currentSong: playingList[songIndex],
-        curSongIndex: songIndex,
-        isPause: false,
-      });
+    if (playingList.length) {
+      
+      if (songIndex < curSongIndex) {
+        this.setState({
+          playingList: playingList,
+          curSongIndex: curSongIndex - 1,
+        });
+      } else if (songIndex === curSongIndex) {
+
+        curSongIndex = songIndex === playingList.length ? 0 : songIndex;
+
+        this.setState({
+          playingList: playingList,
+          currentSong: playingList[curSongIndex],
+          curSongIndex: curSongIndex,
+          isPause: false,
+        });
+      } else {
+        this.setState({ playingList: playingList });
+      }
+      
     } else {
-      this.setState({ playingList: playingList });
+      this.clearPlaylist();
     }
   }
 
@@ -299,6 +318,7 @@ class App extends React.Component {
           </div>
           <footer style={{
               position: 'fixed',
+              zIndex: '50',
               bottom: 0,
               width: '100%',
               backgroundColor: "#ffffff",

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+
 import _ from 'lodash';
 
 import PlayerContext from '../../context/PlayerContext';
@@ -310,6 +311,7 @@ class SongTable extends React.Component {
                   {theadTr}
                 </thead>
               ) : null}
+              {/* 此处使用 ant-motion queue-anim */}
               <tbody className="st-tbody">
                 {trArr}
               </tbody>

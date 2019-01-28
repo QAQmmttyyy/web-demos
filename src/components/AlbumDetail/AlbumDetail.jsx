@@ -1,7 +1,8 @@
 import React from 'react';
 import { Switch, Route, Link, Redirect } from "react-router-dom";
-import l_lang from 'lodash/lang';
+import QueueAnim from 'rc-queue-anim';
 
+import l_lang from 'lodash/lang';
 import PlayerContext from '../../context/PlayerContext';
 import SongTable from '../SongTable/SongTable.jsx';
 import Tabs from '../Tabs/Tabs.jsx';
@@ -22,13 +23,18 @@ class AlbumDetail extends React.Component {
     // p0 页数 可变
     const albumUrl = `${
       process.env.PUBLIC_URL
-    }/api_mock_data/album_detail/p1/album-${this.albumId}.json`;
+    }/api_mock_data/album_detail/all/album-${this.albumId}.json`;
 
     window.fetch(albumUrl).then(
       response => response.statusText === 'OK' ? response.json() : {}
     ).then(
       data => {
         console.log(data.songlist);
+        window.document.getElementById('root').scrollTo({
+          top: 0,
+          left: 0,
+          // behavior: 'smooth'
+        });
         this.setState({ albumInfo: data });
       }
     ).catch(
@@ -73,25 +79,25 @@ class AlbumDetail extends React.Component {
           
           artistsTitle += linkText;
 
-          let 
-            artistLinkPart = '',
-            artistlinkLocation = {};
+          // let 
+          //   artistLinkPart = '',
+          //   artistlinkLocation = {};
 
-          if (artist.link) {
-            artistLinkPart = artist.link.split('?');
-            artistlinkLocation = {
-              pathname: artistLinkPart[0],
-              search: `?${artistLinkPart[1]}`,
-            };
-            return (
-              <Link 
-                key={index}
-                to={artistlinkLocation}
-              >
-                {linkText}
-              </Link>
-            );            
-          }
+          // if (artist.link) {
+          //   artistLinkPart = artist.link.split('?');
+          //   artistlinkLocation = {
+          //     pathname: artistLinkPart[0],
+          //     search: `?${artistLinkPart[1]}`,
+          //   };
+          //   return (
+          //     <Link 
+          //       key={index}
+          //       to={artistlinkLocation}
+          //     >
+          //       {linkText}
+          //     </Link>
+          //   );            
+          // }
 
           return (
             <a key={index}>
@@ -100,25 +106,35 @@ class AlbumDetail extends React.Component {
           );
         });
 
-      const tabInfo = [
-        {
-          to: `${match.url}/songs`,
-          desc: `歌曲(${songNum})`,
-        },
-        {
-          to: `${match.url}/cmts`,
-          desc: `评论(${cmtNum})`,
-        }
-      ];
+      // const tabInfo = [
+      //   {
+      //     to: `${match.url}/songs`,
+      //     desc: `歌曲(${songNum})`,
+      //   },
+      //   {
+      //     to: `${match.url}/cmts`,
+      //     desc: `评论(${cmtNum})`,
+      //   }
+      // ];
 
       return (
         <PlayerContext.Consumer>
           {({ playAll, addAll }) => (
 
-            <React.Fragment>
-              <div className="ad-info">
+            <QueueAnim 
+              type="bottom" 
+              duration={300}
+              interval={150}
+            >
+              <QueueAnim 
+                className="ad-info" 
+                key="adinfo" 
+                type="bottom"
+                duration={300}
+                interval={50}
+              >
                 {/* cover */}
-                <div className="ad-info-cover">
+                <div key="cover" className="ad-info-cover">
                   <img 
                     src={`${coverUrl}?param=177y177`}
                     alt="cover"
@@ -126,13 +142,14 @@ class AlbumDetail extends React.Component {
                   <span className="msk"></span>
                 </div>
                 {/* title */}
-                <div className="ad-info-hd">
+                <div key="title" className="ad-info-hd">
                   {/* <span className="ad-info-hd-label">歌单</span> */}
                   <h2 className="title">{title}</h2>
                   <p className="subtitle">{subTitle}</p>
                 </div>
                 {/* artists */}
                 <div 
+                  key="artists"
                   className="ad-info-artists"
                   title={artistsTitle}
                 >
@@ -140,19 +157,19 @@ class AlbumDetail extends React.Component {
                   {artistArr}
                 </div>
                 {/* publishtime */}
-                <div className="ad-info-pubtime">
+                <div key="publishtime" className="ad-info-pubtime">
                   <span>发行时间：</span>
                   {publishTime}
                 </div>
                 {/* publisher */}
                 {publisher ? (
-                  <div className="ad-info-publisher">
+                  <div key="publisher" className="ad-info-publisher">
                     <span>发行公司：</span>
                     {publisher}
                   </div>                  
                 ) : null}
                 {/* operation */}
-                <div className="ad-info-operation">
+                <div key="operation" className="ad-info-operation">
                   <span 
                     className="btn playall"
                     onClick={() => {this.handleClickPlayallOrAddall(playAll)}}
@@ -168,9 +185,14 @@ class AlbumDetail extends React.Component {
                     添加
                   </span>
                 </div>
-              </div>
-              
-              <Tabs info={tabInfo}/>
+              </QueueAnim>
+
+              <SongTable 
+                key="songlist"
+                songlist={songlist}
+                hasAlbum={false}
+              />
+              {/* <Tabs info={tabInfo}/>
               <Switch>
                 <Redirect 
                   exact 
@@ -197,15 +219,15 @@ class AlbumDetail extends React.Component {
                   path={`${match.path}/cmts`} 
                   render={() => (<div>评论</div>)}
                 />
-              </Switch>
+              </Switch> */}
               
-            </React.Fragment>
+            </QueueAnim>
           )}
         </PlayerContext.Consumer>
       );
     } else {
       // TODO 占位符元素
-      return (<div>加载中...</div>);
+      return (<div></div>);
     }
 
   }

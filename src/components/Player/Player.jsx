@@ -1,4 +1,6 @@
 import React from 'react';
+import { Transition } from 'react-transition-group';
+import l_lang from 'lodash/lang';
 
 import PlayerContext from '../../context/PlayerContext';
 import SongBrief from '../SongBrief/SongBrief.jsx';
@@ -33,7 +35,7 @@ class Player extends React.Component {
     this.audioAmount = 0;
     this.isPause = true; // 指示 进行播放还是暂停
     this.songUrlApi = 'https://music.163.com/song/media/outer/url?id='; // ?id=350909 会返回一个重定向响应
-    this.currentSong = {};
+    // this.currentSong = {};
 
     this.progressBarState = {
       pageX: 0,
@@ -136,7 +138,7 @@ class Player extends React.Component {
   handleClickModeBtn() {
     const nextIndex = (this.state.modeIndex + 1) % this.playMode.length;
 
-    this.audioRef.current.loop = nextIndex === 1 ? true : false;
+    this.audioRef.current.loop = nextIndex === 1;
     this.setState({ modeIndex: nextIndex });
   }
 
@@ -374,16 +376,16 @@ class Player extends React.Component {
 
   // Util
   isNoAudio() {
-    return (this.audioAmount === 0 ? true : false);
+    return (this.audioAmount === 0);
   }
 
   timeFormat(timeNum) {// mm:ss
-    const minutes = parseInt(timeNum / 60),  // 商
-          seconds = parseInt(timeNum % 60),  // 余数
+    const minutes = parseInt(`${timeNum / 60}`),  // 商
+          seconds = parseInt(`${timeNum % 60}`),  // 余数
           minStr = minutes < 10 ? `0${minutes}` : `${minutes}`,
-          secStr = seconds < 10 ? `0${seconds}` : `${seconds}`,
-          curTimeStr = `${minStr}:${secStr}`;
-    return curTimeStr;
+          secStr = seconds < 10 ? `0${seconds}` : `${seconds}`;
+
+    return `${minStr}:${secStr}`;
   }
 
   getIndex(isPrev) {
@@ -423,6 +425,8 @@ class Player extends React.Component {
   }
 
   render() {
+    const { showSongDetail } = this.state;
+
     return (
       <PlayerContext.Consumer>
         {({ playerState, play, pause, clearPlaylist }) => {
@@ -437,6 +441,7 @@ class Player extends React.Component {
           this.audioAmount = playingList.length;
           this.isPause = isPause;
           this.currentSong = currentSong;
+          this.isToReset = l_lang.isEmpty(currentSong);
 
           const volumeBtnCls = `btn ${
             parseFloat(this.state.volumePercent) ? 'volume' : 'muted'
@@ -444,8 +449,8 @@ class Player extends React.Component {
 
           return (
             <div 
-              // ref={this.audioCtrlPanel}
               className="audio-controls-panel"
+              onMouseDown={(ev) => ev.preventDefault()}
             >
               {/* music */}
               <audio 
@@ -462,113 +467,131 @@ class Player extends React.Component {
               >
               </audio>
 
-              <SongBrief toggleSongSetail={this.toggleSongDetail}/>
-
-              {this.state.showSongDetail ? (
-                <SongDetail 
-                  curSong={currentSong}
-                  curTimestamp={this.state.curTimestamp}
-                />
-              ) : null}
-
-              {/* prev play/pause next */}
-              <span 
-                className="btn prev"
-                onClick={() => this.handleClickPrevBtn(play)}
+              <SongBrief 
+                showSongDetail={showSongDetail}
+                toggleSongDetail={this.toggleSongDetail}
+              />
+              
+              <Transition
+                in={this.isToReset ? false : showSongDetail}
+                timeout={250}
+                mountOnEnter
+                unmountOnExit
+                onExited={() => this.setState({showSongDetail: false})}
               >
-                prev
-              </span>
+                {(status) => {
+                  return (
+                    <SongDetail 
+                      transitionClass={`slide-up slide-up-${status}`}
+                      curSong={currentSong}
+                      curTimestamp={this.state.curTimestamp}
+                      toggleSongDetail={this.toggleSongDetail}
+                    />
+                  );
+                }}
+              </Transition>
 
-              <span 
-                className={
-                  'btn play' + (this.state.isPauseIco ? ' pause' : '')
-                }
-                onClick={() => this.handleClickPlayBtn(play, pause)}
-              >
-                play|pause
-              </span>
-
-              <span 
-                className="btn next"
-                onClick={() => this.handleClickNextBtn(play)}
-              >
-                next
-              </span>
-          
               {/* current-time */}
               <div className="played-time">
                 {this.state.curTime}
+              </div>
+              {/* prev play/pause next */}
+              {/* <div className="flex-box"> */}
+                <span 
+                  className="btn prev"
+                  onClick={() => this.handleClickPrevBtn(play)}
+                >
+                  prev
+                </span>
+
+                <span 
+                  className={'btn play' + (this.isToReset ? '' : (this.state.isPauseIco ? ' pause' : ''))}
+                  onClick={() => this.handleClickPlayBtn(play, pause)}
+                >
+                  play|pause
+                </span>
+
+                <span 
+                  className="btn next"
+                  onClick={() => this.handleClickNextBtn(play)}
+                >
+                  next
+                </span>
+              {/* </div> */}
+          
+              {/* remaining-time */}
+              <div className="whole-time">
+                {this.isToReset ? '00:00' : this.state.duration}
               </div>
 
               {/* progress */}
               <div className="progress">
                 <div 
                   className="progress-behind"
-                  style={{ width: this.state.loadProgress }}
+                  style={{ width: this.isToReset ? '0' : this.state.loadProgress }}
                 >
                 </div>
                 <div 
                   ref={this.progressFrontRef}
                   className="progress-front"
-                  style={{ width: this.state.playProgress }}
+                  style={{ width: this.isToReset ? '0' : this.state.playProgress }}
                 >
                   <i 
                     className="progress-btn f-right"
                     onMouseDown={
                       (ev) => this.handleMouseDownProgBtn(play, pause, ev)
                     }
-                  ></i>
+                  />
                 </div>
               </div>
 
-              {/* remaining-time */}
-              <div className="whole-time">
-                {this.state.duration}
-              </div>
+
               
-              {/* volume */}
-              <div className="volume-wrap">
-                {/* volume btn */}
-                <span 
-                  className={volumeBtnCls}
-                  onClick={() => this.handleClickVolumeBtn()}
-                >
-                  volume
-                </span>
-                {/* volumn bar */}
-                <div className="volume-bar">
-                  <div 
-                    className="volume-bar-front"
-                    style={{ width: this.state.volumePercent }}
-                    ref={this.volumeBarFrontRef}
+              <div className="right-operation-box">
+                {/* volume */}
+                <div className="volume-wrap">
+                  {/* volume btn */}
+                  <span 
+                    className={volumeBtnCls}
+                    onClick={() => this.handleClickVolumeBtn()}
                   >
-                    <i 
-                      className="volume-bar-btn f-right"
-                      onMouseDown={(ev) => this.handleMouseDownVolumeBarBtn(ev)}
-                    ></i>
+                    volume
+                  </span>
+                  {/* volumn bar */}
+                  <div className="volume-bar">
+                    <div 
+                      className="volume-bar-front"
+                      style={{ width: this.state.volumePercent }}
+                      ref={this.volumeBarFrontRef}
+                    >
+                      <i 
+                        className="volume-bar-btn f-right"
+                        onMouseDown={(ev) => this.handleMouseDownVolumeBarBtn(ev)}
+                      />
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              {/* mode */}
-              <div 
-                className={
-                  'btn ' + this.playMode[this.state.modeIndex].className
-                }
-                onClick={() => this.handleClickModeBtn()}
-              >
-                mode
-              </div>
+                {/* mode */}
+                <div 
+                  className={
+                    'btn ' + this.playMode[this.state.modeIndex].className
+                  }
+                  onClick={() => this.handleClickModeBtn()}
+                >
+                  mode
+                </div>
 
-              {/* list-btn */}
-              <div 
-                className="list-btn-wrap"
-                onClick={() => this.handleClickListBtn()}
-              >
-                <i className="btn list-btn"></i>
-                <span className="songs-num">
-                  { this.audioAmount ? this.audioAmount : '' }
-                </span>
+                {/* list-btn */}
+                <div 
+                  className="list-btn-wrap"
+                  onClick={() => this.handleClickListBtn()}
+                >
+                  <i className="btn list-btn"/>
+                  <span className="songs-num">
+                    { this.audioAmount ? this.audioAmount : '' }
+                  </span>
+                </div>
               </div>
 
               {/* 播放列表 */}
@@ -589,17 +612,19 @@ class Player extends React.Component {
                     className="plp-operation"
                     onClick={() => this.handleClickClear(clearPlaylist)}
                   >
-                    <i className="icon-delete"></i>
+                    <i className="icon-delete"/>
                     清空
                   </div>
                 </div>
-                <SongTable 
-                  songlist={playingList}
-                  hasLike={false}
-                  hasAlbum={false}
-                  hasSource={true}
-                  inPlaylistPanel={true}
-                />
+                <div className="plp-body">
+                  <SongTable 
+                    songlist={playingList}
+                    hasLike={false}
+                    hasAlbum={false}
+                    hasSource={true}
+                    inPlaylistPanel={true}
+                  />
+                </div>
               </div>
             </div>
           );

@@ -69,7 +69,7 @@ class SongDetail extends React.Component {
     ).then(
       data => {
 
-        if (data.code == 200 && data.lrc && data.lrc.lyric) {
+        if (data.code === 200 && data.lrc && data.lrc.lyric) {
 
           const lrcArr = data.lrc.lyric.split('\n');
           // state
@@ -114,9 +114,24 @@ class SongDetail extends React.Component {
 
   render() {
     // curTimestamp 六位小数
-    const { curSong, curTimestamp } = this.props;
+    const { transitionClass, curSong, curTimestamp, toggleSongDetail } = this.props;
     const { lyric, timestampArr, wheelDeltaY } = this.state;
 
+    this.isToReset = _.isEmpty(curSong);
+
+    if (this.isToReset) {
+      return (
+        <div className={`sd-container ${transitionClass}`}>
+          <div 
+            className="backimg"
+            style={{ backgroundImage: `url(${CoverPlaceholder})` }}
+          >
+          </div>
+          <div className="backimg-mask"></div>
+        </div>
+      );
+    }
+    // 歌曲不同 componentDidUpdate 才执行获取数据，避免render-update无限循环
     this.diffSong = this.songId !== curSong.id;
     this.songId = curSong.id;
 
@@ -244,18 +259,24 @@ class SongDetail extends React.Component {
       };
 
     return (
-      <div className="sd-container">
-        <div className="sd-content">
-          <div 
-            className="album-cover"
-            style={{
-              backgroundImage: `url(${imgSrc})`
+      <div className={`sd-container ${transitionClass}`}>
+        
+        <div 
+          className="sd-content"
+          // onMouseDown={(ev) => ev.preventDefault()}
+        >
+          <span 
+            className="close-btn"
+            onClick={(ev) => {
+              if (ev.button === 0) toggleSongDetail();
             }}
           >
-            {/* <img 
-              src={imgSrc}
-              alt="cover"
-            /> */}
+          </span>
+          <div 
+            className="album-cover"
+            style={{ backgroundImage: `url(${imgSrc})` }}
+          >
+            {/* <img src={imgSrc} alt="cover"/> */}
           </div>
           {/* name */}
           <div className="song-info">
@@ -304,19 +325,19 @@ class SongDetail extends React.Component {
                   transform: `translateY(${translateY}px)`,
                 }}
                 onWheel={(ev) => this.handleWheelScroll(ev)}
-                onMouseDown={(ev) => ev.preventDefault()}
+                
               >
                 {sentenceArr}
               </div>
             </div>
           </div>
         </div>
+        
         <div 
           className="backimg"
-          style={{
-            backgroundImage: `url(${imgSrc})`
-          }}
-        ></div>
+          style={{ backgroundImage: `url(${this.isToReset ? CoverPlaceholder : imgSrc})` }}
+        >
+        </div>
         <div className="backimg-mask"></div>
       </div>
     );

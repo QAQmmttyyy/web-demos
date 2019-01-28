@@ -11,54 +11,114 @@ class Pager extends React.Component {
     this.state = {
       pageTotal: this.props.pageTotal,
       pageNumArr: [],
-      currentPage: 1,
     };
+    this.currentPage = this.props.currentPage;
+    this.diffPage = false;
     this.pNumArrLE = [];
     this.pNumArrRE = [];
   }
 
   componentDidMount() {
+    console.log('pager-DidMount');
     const 
       pTotal = this.state.pageTotal,
+      curPage = this.currentPage,
+      pNumArrLE = this.pNumArrLE,
       pNumArrRE = this.pNumArrRE;
     
-    let pNumArr = [];
+    let pageNumArr = [];
     
-    // 计算初始 pageNumArr 只提供九个页码块
+    // 计算 pageNumArr 只提供九个页码块
     if (pTotal > 10) {
       // pNumArrLE
       for (let i = 1; i < 9; i++) {
-        pNumArr.push(i);
+        pNumArrLE.push(i);
       }
-      pNumArr.push('···', pTotal);
-      this.pNumArrLE = pNumArr;
+      pNumArrLE.push('···', pTotal);
 
       // pNumArrRE
       for (let j = pTotal; j > (pTotal - 8); j--) {
         pNumArrRE.push(j);
       }
       pNumArrRE.push('···', 1);
-      this.pNumArrRE = pNumArrRE.reverse();
+      pNumArrRE.reverse();
+
+      // 根据curpage 选定pager布局
+      if (curPage <= 5) {
+        pageNumArr = pNumArrLE;
+
+      } else if ((pTotal - curPage) < 5) {
+        pageNumArr = pNumArrRE;
+        
+      } else {
+        const pNumArrMid = [];
+        pNumArrMid.push(1, '···');
+
+        for (let i = (curPage - 3); i <= (curPage + 3); i++) {
+          pNumArrMid.push(i)
+        }
+
+        pNumArrMid.push('···', pTotal);
+        pageNumArr = pNumArrMid;
+      }
 
     } else {
       for (let i = 1; i <= pTotal; i++) {
-        pNumArr.push(i);
+        pageNumArr.push(i);
       }
     }
     
-    this.setState({ pageNumArr: pNumArr });
+
+    this.setState({ pageNumArr: pageNumArr });
+  }
+
+  componentDidUpdate() {
+    console.log('pager-Update');
+    const pTotal = this.state.pageTotal;
+    const curPage = this.currentPage;
+    let pageNumArr = [];
+
+    if (this.diffPage) {
+      // 计算 pageNumArr currentPage
+      
+      if (pTotal > 10) {
+  
+        if (curPage <= 5) {
+          pageNumArr = this.pNumArrLE;
+  
+        } else if ((pTotal - curPage) < 5) {
+          pageNumArr = this.pNumArrRE;
+          
+        } else {
+          const pNumArrMid = [];
+          pNumArrMid.push(1, '···');
+  
+          for (let i = (curPage - 3); i <= (curPage + 3); i++) {
+            pNumArrMid.push(i)
+          }
+  
+          pNumArrMid.push('···', pTotal);
+          pageNumArr = pNumArrMid;
+        }
+  
+        this.setState({ 
+          pageNumArr: pageNumArr
+        });
+
+      }
+    }
+
   }
 
   handleClickNum(funcGetList, pNum) {
     const pTotal = this.state.pageTotal;
-    const curPage = this.state.currentPage;
+    const curPage = this.currentPage;
     let pageNumArr = [];
 
     if (pNum === curPage) {
       return;
     }
-    // 获取数据
-    funcGetList(pNum - 1);
+
     // 计算 pageNumArr currentPage
     
     if (pTotal > 10) {
@@ -82,13 +142,15 @@ class Pager extends React.Component {
       }
 
       this.setState({ 
-        pageNumArr: pageNumArr,
-        currentPage: pNum
+        pageNumArr: pageNumArr
       });
-      
-    } else {
-      this.setState({ currentPage: pNum });
+      // currentPage: pNum
     }
+    // 获取数据
+    // funcGetList(pNum - 1);
+    // } else {
+    //   this.setState({ currentPage: pNum });
+    // }
   }
 
   render() {
@@ -96,25 +158,35 @@ class Pager extends React.Component {
       return <div></div>;
     }
 
-    // Playlists 传过来的获取数据方法。
-    const { getListData } = this.props;
-    const curPage = this.state.currentPage;
-    const pTotal = this.state.pageTotal;
+    // Playlists 传过来的获取数据方法。由props驱动页码render
+    const { pageTotal, currentPage, urlPath, getListData } = this.props;
+
+    this.diffPage = this.currentPage !== currentPage;
+    this.currentPage = currentPage;
 
     const pNumElArr = this.state.pageNumArr.map((val, idx) => {
       let el = null;
 
       if ((typeof val) === 'number') {
-        el = (
-          <a 
+        el = (val === currentPage) ? (
+          <span
             key={idx}
-            className={
-              (val === curPage) ? `p-num selected` : 'p-num'
-            }
+            className="p-num selected"
+          >
+            {val}
+          </span>
+        ) : (
+          <Link 
+            key={idx}
+            to={{
+              pathname: urlPath,
+              search: `?page=${val}`
+            }}
+            className="p-num"
             onClick={() => this.handleClickNum(getListData, val)}
           >
             {val}
-          </a>
+          </Link>
         );
 
       } else if ((typeof val) === 'string') {
@@ -130,24 +202,44 @@ class Pager extends React.Component {
 
     
     const
-      prvPage = (curPage - 1) < 1 ? 1 : curPage - 1,
-      nxtPage = (curPage + 1) > pTotal ? pTotal : curPage + 1;
+      prvPage = (currentPage - 1) < 1 ? 1 : currentPage - 1,
+      nxtPage = (currentPage + 1) > pageTotal ? pageTotal : currentPage + 1;
 
     return (
       <div className="p-pager">
-        <a 
-          className="btn prev"
-          onClick={() => this.handleClickNum(getListData, prvPage)}
-        >
-          上一页
-        </a>
+        {currentPage === 1 ? (
+          <span className="btn prev">
+            上一页
+          </span>
+        ) : (
+          <Link 
+            to={{
+              pathname: urlPath,
+              search: `?page=${prvPage}`
+            }}
+            className="btn prev"
+            onClick={() => this.handleClickNum(getListData, prvPage)}
+          >
+            上一页
+          </Link>
+        )}
         {pNumElArr}
-        <a 
-          className="btn next"
-          onClick={() => this.handleClickNum(getListData, nxtPage)}
-        >
-          下一页
-        </a>
+        {currentPage === pageTotal ? (
+          <span className="btn next">
+            下一页
+          </span>
+        ) : (
+          <Link 
+            to={{
+              pathname: urlPath,
+              search: `?page=${nxtPage}`
+            }}
+            className="btn next"
+            onClick={() => this.handleClickNum(getListData, nxtPage)}
+          >
+            下一页
+          </Link>
+        )}
       </div>
     );
   }
